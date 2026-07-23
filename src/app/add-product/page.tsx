@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export default function AddProductPage() {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [sellerName, setSellerName] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [loading, setLoading] = useState(false);
@@ -13,7 +13,7 @@ export default function AddProductPage() {
   const [supabaseClient, setSupabaseClient] = useState<any>(null);
 
   useEffect(() => {
-    // تحميل مكتبة Supabase عبر CDN لتجنب مشاكل التثبيت
+    // تحميل مكتبة Supabase عبر CDN
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
     script.onload = () => {
@@ -38,28 +38,55 @@ export default function AddProductPage() {
       return;
     }
 
-    const { data, error } = await supabaseClient.from('products').insert([
-      {
-        title,
-        price: parseFloat(price),
-        image,
-        seller_name: sellerName,
-        whatsapp,
-      },
-    ]);
+    try {
+      let imageUrl = '';
 
-    setLoading(false);
+      // 1. رفع الصورة إلى Supabase Storage إذا تم اختيار صورة
+      if (imageFile) {
+        const fileExt = imageFile.name.split('.').pop();
+        const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
+        const filePath = `${fileName}`;
 
-    if (error) {
-      console.error(error);
-      setMessage('❌ حدث خطأ أثناء إضافة المنتج. تأكد من البيانات.');
-    } else {
-      setMessage('✅ تم إضافة المنتج بنجاح إلى المتجر!');
+        const { error: uploadError } = await supabaseClient.storage
+          .from('product-images')
+          .upload(filePath, imageFile);
+
+        if (uploadError) {
+          throw new Error('فشل رفع الصورة: ' + uploadError.message);
+        }
+
+        // الحصول على الرابط العام للصورة
+        const { data: urlData } = supabaseClient.storage
+          .from('product-images')
+          .getPublicUrl(filePath);
+
+        imageUrl = urlData.publicUrl;
+      }
+
+      // 2. إدراج بيانات المنتج في الجدول
+      const { error: dbError } = await supabaseClient.from('products').insert([
+        {
+          title,
+          price: parseFloat(price),
+          image: imageUrl,
+          seller_name: sellerName,
+          whatsapp,
+        },
+      ]);
+
+      if (dbError) throw dbError;
+
+      setMessage('✅ تم إضافة المنتج بنجاح مع الصورة!');
       setTitle('');
       setPrice('');
-      setImage('');
+      setImageFile(null);
       setSellerName('');
       setWhatsapp('');
+    } catch (error: any) {
+      console.error(error);
+      setMessage(`❌ حدث خطأ: ${error.message || 'تأكد من البيانات والأذونات'}`);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,13 +126,13 @@ export default function AddProductPage() {
         </div>
 
         <div>
-          <label style={{ display: 'block', marginBottom: '5px' }}>رابط صورة المنتج (URL):</label>
+          <label style={{ display: 'block', marginBottom: '5px' }}>صورة المنتج:</label>
           <input
-            type="url"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            placeholder="https://example.com/image.jpg"
+            type="file"
+            accept="image/*"
+            required
+            onChange={(e) => setImageFile(e.target.files ? e.target.files[0] : null)}
+            style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc', backgroundColor: '#fff' }}
           />
         </div>
 
@@ -146,7 +173,7 @@ export default function AddProductPage() {
             cursor: loading ? 'not-allowed' : 'pointer'
           }}
         >
-          {loading ? 'جاري الإضافة...' : 'إضافة المنتج'}
+          {loading ? 'جاري رفع الصورة والإضافة...' : 'إضافة المنتج'}
         </button>
       </form>
     </div>
