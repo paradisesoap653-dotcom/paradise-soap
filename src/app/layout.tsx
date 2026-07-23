@@ -1,9 +1,7 @@
+
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import "./globals.css";
-import { AppContextProvider } from "@/context/AppContext";
-import FloatingSupport from "@/components/FloatingSupport";
-import PWARegister from "@/components/PWARegister";
 
 export const metadata: Metadata = {
   title: "برادايس للصابون ومستحضرات التجميل | Paradise Soap Atbara",
@@ -24,13 +22,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ar" className="scroll-smooth">
+    <html lang="ar" dir="rtl" className="scroll-smooth">
       <body className="bg-slate-50 text-slate-900 antialiased font-sans min-h-screen flex flex-col selection:bg-emerald-100 selection:text-emerald-900">
-        <AppContextProvider>
-          <PWARegister />
-          {children}
-          <FloatingSupport />
-        </AppContextProvider>
+        {children}
       </body>
     </html>
   );
