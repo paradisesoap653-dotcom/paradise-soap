@@ -1,144 +1,18 @@
-"use client";
+import React from "react";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
-
-export interface CartItem {
-  id: string | number;
-  nameAr: string;
-  priceSdg: number;
-  sizeAr?: string;
-  image?: string;
-  quantity: number;
+interface WhatsAppIconProps {
+  className?: string;
 }
 
-const dictionary: Record<string, Record<string, string>> = {
-  ar: {
-    cartTitle: "سلة التسوق",
-    emptyCart: "السلة فارغة حالياً",
-    checkout: "إتمام الطلب عبر الواتساب",
-    total: "المجموع الكلي",
-    currency: "ج.س",
-    continueShopping: "مواصلة التسوق",
-    deleteItem: "حذف",
-  },
-  en: {
-    cartTitle: "Shopping Cart",
-    emptyCart: "Your cart is empty",
-    checkout: "Checkout via WhatsApp",
-    total: "Total",
-    currency: "SDG",
-    continueShopping: "Continue Shopping",
-    deleteItem: "Delete",
-  },
-};
-
-interface AppContextType {
-  locale: string;
-  setLocale: (locale: string) => void;
-  t: (key: string) => string;
-  cart: CartItem[];
-  addToCart: (product: any) => void;
-  removeFromCart: (id: string | number) => void;
-  updateQuantity: (id: string | number, delta: number) => void;
-  clearCart: () => void;
-  isCartOpen: boolean;
-  setIsCartOpen: (open: boolean) => void;
-  cartTotal: number;
-  cartCount: number;
-}
-
-const AppContext = createContext<AppContextType | undefined>(undefined);
-
-export function AppProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocale] = useState<string>("ar");
-  const [cart, setCart] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
-
-  useEffect(() => {
-    try {
-      const savedCart = localStorage.getItem("paradise_cart");
-      if (savedCart) {
-        setCart(JSON.parse(savedCart));
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  }, []);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem("paradise_cart", JSON.stringify(cart));
-    } catch (e) {
-      console.error(e);
-    }
-  }, [cart]);
-
-  const t = (key: string): string => {
-    return dictionary[locale]?.[key] || key;
-  };
-
-  const addToCart = (product: any) => {
-    setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-    setIsCartOpen(true);
-  };
-
-  const removeFromCart = (id: string | number) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const updateQuantity = (id: string | number, delta: number) => {
-    setCart((prev) =>
-      prev
-        .map((item) => {
-          if (item.id === id) {
-            const newQty = item.quantity + delta;
-            return newQty > 0 ? { ...item, quantity: newQty } : null;
-          }
-          return item;
-        })
-        .filter(Boolean) as CartItem[]
-    );
-  };
-
-  const clearCart = () => setCart([]);
-
-  const cartTotal = cart.reduce((sum, item) => sum + (item.priceSdg || 0) * item.quantity, 0);
-  const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
+export default function WhatsAppIcon({ className = "w-5 h-5" }: WhatsAppIconProps) {
   return (
-    <AppContext.Provider
-      value={{
-        locale,
-        setLocale,
-        t,
-        cart,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        isCartOpen,
-        setIsCartOpen,
-        cartTotal,
-        cartCount,
-      }}
+    <svg
+      className={className}
+      fill="currentColor"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
     >
-      {children}
-    </AppContext.Provider>
+      <path d="M12.012 2c-5.508 0-9.989 4.478-9.99 9.984 0 1.762.459 3.481 1.332 4.993l-1.416 5.17 5.291-1.387a9.948 9.948 0 004.78 1.222h.003c5.508 0 9.989-4.479 9.99-9.985 0-2.668-1.039-5.176-2.927-7.063C17.189 3.039 14.68 2 12.012 2zm0 1.832c2.181 0 4.232.85 5.776 2.392 1.543 1.543 2.393 3.593 2.393 5.774 0 4.498-3.66 8.155-8.159 8.155h-.002a8.113 8.113 0 01-3.901-1.002l-.28-.166-2.903.761.774-2.828-.182-.29a8.12 8.12 0 01-1.246-4.283c0-4.498 3.66-8.155 8.159-8.155zm4.486 10.963c-.246-.123-1.457-.719-1.683-.801-.225-.082-.39-.123-.554.123-.165.246-.638.801-.782.966-.144.165-.288.185-.534.062-.246-.123-1.04-.383-1.982-1.223-.733-.653-1.228-1.46-1.372-1.706-.144-.246-.015-.379.108-.501.111-.11.246-.287.37-.431.123-.144.165-.246.246-.41.082-.165.041-.308-.021-.431-.062-.123-.554-1.334-.76-1.826-.2-.48-.403-.415-.554-.423-.144-.007-.308-.009-.472-.009s-.432.062-.658.308c-.226.246-.863.843-.863 2.057 0 1.214.884 2.383 1.007 2.548.123.165 1.74 2.657 4.215 3.727.589.255 1.049.407 1.408.521.592.188 1.131.162 1.557.098.475-.071 1.457-.596 1.663-1.171.206-.575.206-1.068.144-1.171-.062-.103-.226-.185-.472-.308z" />
+    </svg>
   );
-}
-
-export function useApp() {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("useApp must be used within an AppProvider");
-  }
-  return context;
 }
