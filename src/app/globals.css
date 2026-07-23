@@ -1,12 +1,16 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 @layer base {
   body {
-    background-color: #f9fafb;
-    color: #111827;
+    background-color: #FAF7F2;
+    color: #1f2937;
     direction: rtl;
     text-align: right;
+    font-family: system-ui, -apple-system, sans-serif;
   }
 }
+
+/* تنسيقات بديلة تضمن تحسين المظهر فوراً */
+.rounded-3xl { border-radius: 1.5rem !important; }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
+.border { border-style: solid !important; }
