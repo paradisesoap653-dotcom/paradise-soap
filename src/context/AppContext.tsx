@@ -11,9 +11,31 @@ export interface CartItem {
   quantity: number;
 }
 
+const dictionary: Record<string, Record<string, string>> = {
+  ar: {
+    cartTitle: "سلة التسوق",
+    emptyCart: "السلة فارغة حالياً",
+    checkout: "إتمام الطلب عبر الواتساب",
+    total: "المجموع الكلي",
+    currency: "ج.س",
+    continueShopping: "مواصلة التسوق",
+    deleteItem: "حذف",
+  },
+  en: {
+    cartTitle: "Shopping Cart",
+    emptyCart: "Your cart is empty",
+    checkout: "Checkout via WhatsApp",
+    total: "Total",
+    currency: "SDG",
+    continueShopping: "Continue Shopping",
+    deleteItem: "Delete",
+  },
+};
+
 interface AppContextType {
   locale: string;
   setLocale: (locale: string) => void;
+  t: (key: string) => string;
   cart: CartItem[];
   addToCart: (product: any) => void;
   removeFromCart: (id: string | number) => void;
@@ -50,6 +72,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
       console.error(e);
     }
   }, [cart]);
+
+  const t = (key: string): string => {
+    return dictionary[locale]?.[key] || key;
+  };
 
   const addToCart = (product: any) => {
     setCart((prev) => {
@@ -92,6 +118,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       value={{
         locale,
         setLocale,
+        t,
         cart,
         addToCart,
         removeFromCart,
