@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-// إنشاء اتصال مباشر بـ Supabase
+// إنشاء الاتصال المباشر بـ Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
