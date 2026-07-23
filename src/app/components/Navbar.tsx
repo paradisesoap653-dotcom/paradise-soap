@@ -5,8 +5,10 @@ import Link from "next/link";
 import { useApp } from "@/context/AppContext";
 
 export default function Navbar() {
-  const { cartCount, toggleCart, locale, setLocale, t } = useApp();
+  const { cart, setIsCartOpen, locale, setLocale, t } = useApp();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const cartCount = cart ? cart.reduce((total, item) => total + item.quantity, 0) : 0;
 
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
@@ -18,7 +20,7 @@ export default function Navbar() {
             <span>صابون الجنة</span>
           </Link>
 
-          {/* أزرار السلة واللغة والقائمة */}
+          {/* أزرار التحكم: السلة واللغة */}
           <div className="flex items-center gap-3">
             {/* تبديل اللغة */}
             <button
@@ -30,7 +32,7 @@ export default function Navbar() {
 
             {/* زر السلة */}
             <button
-              onClick={toggleCart}
+              onClick={() => setIsCartOpen(true)}
               className="relative p-2 text-gray-700 hover:text-amber-800 transition-colors"
               aria-label="سلة التسوق"
             >
