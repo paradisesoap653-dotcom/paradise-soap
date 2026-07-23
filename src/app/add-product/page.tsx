@@ -41,7 +41,7 @@ export default function AddProductPage() {
     try {
       let imageUrl = '';
 
-      // 1. رفع الصورة إلى Supabase Storage إذا تم اختيار صورة
+      // 1. رفع الصورة إلى Supabase Storage
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
