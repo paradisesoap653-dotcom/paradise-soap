@@ -12,6 +12,8 @@ export interface CartItem {
 }
 
 interface AppContextType {
+  locale: string;
+  setLocale: (locale: string) => void;
   cart: CartItem[];
   addToCart: (product: any) => void;
   removeFromCart: (id: string | number) => void;
@@ -26,6 +28,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocale] = useState<string>("ar");
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
@@ -87,6 +90,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   return (
     <AppContext.Provider
       value={{
+        locale,
+        setLocale,
         cart,
         addToCart,
         removeFromCart,
