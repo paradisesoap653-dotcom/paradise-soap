@@ -1,16 +1,51 @@
 @import "tailwindcss";
 
-@layer base {
-  body {
-    background-color: #FAF7F2;
-    color: #1f2937;
-    direction: rtl;
-    text-align: right;
-    font-family: system-ui, -apple-system, sans-serif;
-  }
+/* تنسيقات عامة تضمن المظهر الفاخر والمريح للعين */
+:root {
+  --bg-main: #FAF7F2;
+  --primary-olive: #5C6348;
+  --primary-dark: #4a503a;
+  --accent-gold: #d97706;
 }
 
-/* تنسيقات بديلة تضمن تحسين المظهر فوراً */
-.rounded-3xl { border-radius: 1.5rem !important; }
-.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important; }
-.border { border-style: solid !important; }
+body {
+  background-color: var(--bg-main) !important;
+  color: #1f2937 !important;
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+/* إصلاح تشوهات الإطارات والحدود السوداء */
+* {
+  border-color: rgba(92, 99, 72, 0.12) !important;
+  box-sizing: border-box;
+}
+
+/* تنسيق الكروت والحواف */
+.rounded-3xl, [class*="rounded-3xl"] {
+  border-radius: 1.5rem !important;
+}
+
+.rounded-2xl, [class*="rounded-2xl"] {
+  border-radius: 1rem !important;
+}
+
+.rounded-full, [class*="rounded-full"] {
+  border-radius: 9999px !important;
+}
+
+/* الظلال والأسطح البيضاء */
+.bg-white {
+  background-color: #ffffff !important;
+}
+
+.shadow-sm {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* أزرار التحكم والروابط */
+button, a {
+  text-decoration: none !important;
+}
