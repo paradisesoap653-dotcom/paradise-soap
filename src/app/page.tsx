@@ -4,8 +4,6 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import FloatingSupport from "@/components/FloatingSupport";
 import { useApp } from "@/context/AppContext";
 
 export default function HomePage() {
@@ -35,12 +33,6 @@ export default function HomePage() {
                 className="bg-white text-[#5C6348] font-bold px-8 py-3 rounded-full shadow-lg hover:bg-amber-50 transition-all active:scale-95 text-sm"
               >
                 تسوق الآن
-              </a>
-              <a
-                href="#about"
-                className="bg-white/10 backdrop-blur-md text-white font-medium px-6 py-3 rounded-full border border-white/30 hover:bg-white/20 transition-all text-sm"
-              >
-                تعرف علينا
               </a>
             </div>
 
@@ -162,7 +154,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* 4. قسم الآراء والتقييمات (Testimonials) */}
+        {/* 4. قسم الآراء والتقييمات */}
         <section className="bg-[#F3F4ED] py-16 px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-2xl font-bold text-gray-900 mb-8">آراء عملائنا</h2>
@@ -172,7 +164,6 @@ export default function HomePage() {
                 <p className="text-xs text-gray-600 leading-relaxed mb-3">
                   "الصابون ممتاز جداً ونعومته واضحة على البشرة من أول استخدام. تسلم الأيادي!"
                 </p>
-
                 <div className="font-bold text-xs text-gray-800">- سارة أحمد</div>
               </div>
               <div className="bg-white p-6 rounded-2xl shadow-sm text-right">
@@ -187,9 +178,10 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* الزر العائم للدعم الفني والفوتر */}
-      <FloatingSupport />
-      <Footer />
+      {/* الفوتر البسيط السريع */}
+      <footer className="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
+        <p>جميع الحقوق محفوظة © {new Date().getFullYear()} - صابون الجنة (Paradise Soap)</p>
+      </footer>
     </div>
   );
 }
