@@ -37,11 +37,11 @@ export default function HomePage() {
   const { addToCart } = useApp();
 
   return (
-    <div style={{ backgroundColor: "#FAF7F2", color: "#2D3748", fontFamily: "sans-serif", direction: "rtl", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#FAF7F2", color: "#2D3748", fontFamily: "sans-serif", direction: "rtl", minHeight: "100vh", position: "relative" }}>
       {/* الهيدر العلوي */}
       <Navbar />
 
-      {/* 1. قسم الواجهة الرئيسي (Hero) بدون ظلال معتمة وبخط عربي واضح */}
+      {/* 1. قسم الواجهة الرئيسي (Hero) */}
       <section style={{ backgroundColor: "#5C6348", color: "#FFFFFF", padding: "40px 16px 50px", textAlign: "center", borderBottomLeftRadius: "30px", borderBottomRightRadius: "30px" }}>
         <div style={{ maxWidth: "600px", margin: "0 auto" }}>
           <span style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "#FEF3C7", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", display: "inline-block", marginBottom: "15px" }}>
@@ -80,10 +80,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. قسم المميزات - كروت بيضاء ناعمة بحواف انسيابية */}
+      {/* 2. قسم المميزات */}
       <section style={{ maxWidth: "900px", margin: "-20px auto 40px", padding: "0 16px" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }}>
-          
           <div style={{ backgroundColor: "#FFFFFF", padding: "20px", borderRadius: "20px", textAlign: "center", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
             <div style={{ fontSize: "24px", marginBottom: "8px" }}>🌱</div>
             <h3 style={{ fontSize: "15px", fontWeight: "bold", margin: "0 0 5px" }}>مكونات طبيعية 100%</h3>
@@ -101,7 +100,6 @@ export default function HomePage() {
             <h3 style={{ fontSize: "15px", fontWeight: "bold", margin: "0 0 5px" }}>توصيل سريع وآمن</h3>
             <p style={{ fontSize: "12px", color: "#718096", margin: 0, lineHeight: "1.5" }}>يصلك طلبك حتى باب المنزل في أسرع وقت ممكن.</p>
           </div>
-
         </div>
       </section>
 
@@ -166,8 +164,89 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 5. قسم التواصل الاجتماعي */}
+      <section id="contact" style={{ backgroundColor: "#FFFFFF", padding: "40px 16px", borderTop: "1px solid #EDF2F7" }}>
+        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
+          <h2 style={{ fontSize: "20px", fontWeight: "bold", color: "#2D3748", marginBottom: "10px" }}>تواصل معنا</h2>
+          <p style={{ fontSize: "13px", color: "#718096", marginBottom: "25px" }}>يسعدنا خدمة عملائنا الكرام دائماً</p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "15px", marginBottom: "25px", fontSize: "13px" }}>
+            <a href="tel:0913009060" style={{ backgroundColor: "#FAF7F2", padding: "10px 18px", borderRadius: "15px", color: "#5C6348", fontWeight: "bold", textDecoration: "none", border: "1px solid #E2E8F0" }}>
+              📞 0913009060
+            </a>
+            <a href="tel:0114537190" style={{ backgroundColor: "#FAF7F2", padding: "10px 18px", borderRadius: "15px", color: "#5C6348", fontWeight: "bold", textDecoration: "none", border: "1px solid #E2E8F0" }}>
+              📞 0114537190
+            </a>
+            <a href="mailto:paradisesoap365@gmail.com" style={{ backgroundColor: "#FAF7F2", padding: "10px 18px", borderRadius: "15px", color: "#5C6348", fontWeight: "bold", textDecoration: "none", border: "1px solid #E2E8F0" }}>
+              ✉️ paradisesoap365@gmail.com
+            </a>
+          </div>
+
+          <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#1877F2", color: "#FFFFFF", padding: "10px 18px", borderRadius: "20px", fontWeight: "bold", textDecoration: "none", fontSize: "12px" }}>
+              🔵 فيسبوك
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "10px 18px", borderRadius: "20px", fontWeight: "bold", textDecoration: "none", fontSize: "12px" }}>
+              🎵 تيك توك
+            </a>
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#FF0000", color: "#FFFFFF", padding: "10px 18px", borderRadius: "20px", fontWeight: "bold", textDecoration: "none", fontSize: "12px" }}>
+              🔴 يوتيوب
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* 🔴 🟢 أزرار الاتصال والواتساب العائمة (Floating Action Buttons) */}
+      <div style={{ position: "fixed", bottom: "20px", left: "20px", zIndex: 999, display: "flex", flexDirection: "column", gap: "12px" }}>
+        
+        {/* زر الواتساب العائم */}
+        <a 
+          href="https://wa.me/249913009060" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          aria-label="تواصل معنا عبر الواتساب"
+          style={{ 
+            backgroundColor: "#25D366", 
+            color: "#FFFFFF", 
+            width: "52px", 
+            height: "52px", 
+            borderRadius: "50%", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            boxShadow: "0 4px 15px rgba(37, 211, 102, 0.4)", 
+            textDecoration: "none", 
+            fontSize: "26px" 
+          }}
+        >
+          💬
+        </a>
+
+        {/* زر الاتصال الهاتفي العائم */}
+        <a 
+          href="tel:0913009060" 
+          aria-label="اتصل بنا المباشر"
+          style={{ 
+            backgroundColor: "#5C6348", 
+            color: "#FFFFFF", 
+            width: "52px", 
+            height: "52px", 
+            borderRadius: "50%", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            boxShadow: "0 4px 15px rgba(92, 99, 72, 0.4)", 
+            textDecoration: "none", 
+            fontSize: "22px" 
+          }}
+        >
+          📞
+        </a>
+
+      </div>
+
       {/* الفوتر */}
-      <footer style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid #E2E8F0", padding: "20px 16px", textAlign: "center", fontSize: "12px", color: "#A0AEC0" }}>
+      <footer style={{ backgroundColor: "#FAF7F2", borderTop: "1px solid #E2E8F0", padding: "20px 16px 80px", textAlign: "center", fontSize: "12px", color: "#A0AEC0" }}>
         <p style={{ margin: 0 }}>جميع الحقوق محفوظة © {new Date().getFullYear()} — صابون الجنة (Paradise Soap)</p>
       </footer>
     </div>
