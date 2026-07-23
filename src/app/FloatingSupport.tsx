@@ -101,7 +101,7 @@ function SupportLine({
   phone: string;
   whatsapp: string;
   tone: "emerald" | "teal";
-  locale: "ar" | "en";
+  loclocale: string;
 }) {
   const callClass = tone === "emerald" ? "bg-emerald-700 hover:bg-emerald-800" : "bg-teal-700 hover:bg-teal-800";
   const labelClass = tone === "emerald" ? "bg-emerald-100 text-emerald-800" : "bg-teal-100 text-teal-800";
