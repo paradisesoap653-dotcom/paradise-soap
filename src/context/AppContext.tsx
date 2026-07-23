@@ -40,7 +40,7 @@ interface AppContextType {
   setLocale: (locale: string) => void;
   t: (key: string) => string;
   cart: CartItem[];
-  addToCart: (product: any) => void;
+  addToCart: (product: any, quantity?: number) => void;
   removeFromCart: (id: string | number) => void;
   updateQuantity: (id: string | number, delta: number) => void;
   clearCart: () => void;
@@ -80,14 +80,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return dictionary[locale]?.[key] || key;
   };
 
-  const addToCart = (product: any) => {
+  const addToCart = (product: any, quantity: number = 1) => {
     setCart((prev) => {
       const itemId = product.id || product.productId;
       const existing = prev.find((item) => (item.id || item.productId) === itemId);
       if (existing) {
         return prev.map((item) =>
           (item.id || item.productId) === itemId
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
@@ -97,7 +97,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
           ...product,
           id: itemId,
           productId: itemId,
-          quantity: 1,
+          quantity: quantity,
         },
       ];
     });
