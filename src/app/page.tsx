@@ -6,8 +6,36 @@ import Link from "next/link";
 import Navbar from "./components/Navbar";
 import { useApp } from "@/context/AppContext";
 
+// قائمة منتجات افتراضية متوافقة لتفادي أخطاء الأنواع (Types)
+const sampleProducts = [
+  {
+    id: "1",
+    nameAr: "صابون النيم والنعناع الطبيعي",
+    sizeAr: "قطعة 100 جرام",
+    descriptionAr: "صابون طبيعي ينظف البشرة بعمق ويساعد على تهدئة التهابات الجلد والبشرة الحساسة.",
+    priceSdg: 3500,
+    image: "/images/placeholder.jpg",
+  },
+  {
+    id: "2",
+    nameAr: "معجون غسيل الصحون الفائق (بالليمون)",
+    sizeAr: "عبوة 1 كيلو",
+    descriptionAr: "تركيبة مركزة وقوية لإزالة الدهون المستعصية مع حماية فائقة للأيدي.",
+    priceSdg: 4500,
+    image: "/images/placeholder.jpg",
+  },
+  {
+    id: "3",
+    nameAr: "جل استحمام برائحة العود الملكي",
+    sizeAr: "عبوة 500 مل",
+    descriptionAr: "تجربة استحمام فاخرة برائحة العود الأصيل تدوم طويلاً وتمنح بشرتك النعومة.",
+    priceSdg: 6000,
+    image: "/images/placeholder.jpg",
+  },
+];
+
 export default function HomePage() {
-  const { products, addToCart } = useApp();
+  const { addToCart } = useApp();
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-gray-800 font-sans flex flex-col justify-between">
@@ -83,7 +111,7 @@ export default function HomePage() {
               </div>
               <h3 className="font-bold text-gray-900 mb-1 text-sm">توصيل سريع وآمن</h3>
               <p className="text-xs text-gray-500 leading-relaxed">
-                صلك طلبك حتى باب المنزل في أسرع وقت ممكن.
+                يصلك طلبك حتى باب المنزل في أسرع وقت ممكن.
               </p>
             </div>
           </div>
@@ -99,58 +127,54 @@ export default function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products && products.length > 0 ? (
-              products.map((product) => (
-                <div
-                  key={product.id}
-                  className="bg-white rounded-2xl border border-amber-100/80 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="relative h-56 w-full bg-gray-100">
-                      <Image
-                        src={product.image || product.images?.[0] || "/images/placeholder.jpg"}
-                        alt={product.nameAr}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-bold text-gray-900 text-base">{product.nameAr}</h3>
-                        <span className="text-xs bg-amber-50 text-amber-800 font-medium px-2.5 py-1 rounded-full border border-amber-200">
-                          {product.sizeAr || "عبوة خاصة"}
-                        </span>
-                      </div>
-                      <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-4">
-                        {product.descriptionAr || "منتج طبيعي فاخر مصنوع بعناية فائقة لترطيب البشرة."}
-                      </p>
-                    </div>
+            {sampleProducts.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white rounded-2xl border border-amber-100/80 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="relative h-56 w-full bg-gray-100">
+                    <Image
+                      src={product.image}
+                      alt={product.nameAr}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-
-                  <div className="p-5 pt-0 flex items-center justify-between border-t border-gray-50 mt-auto">
-                    <div className="text-amber-900 font-bold text-lg">
-                      {product.priceSdg?.toLocaleString()} <span className="text-xs font-normal">ج.س</span>
+                  <div className="p-5">
+                    <div className="flex justify-between items-start mb-2">
+                      <h3 className="font-bold text-gray-900 text-base">{product.nameAr}</h3>
+                      <span className="text-xs bg-amber-50 text-amber-800 font-medium px-2.5 py-1 rounded-full border border-amber-200">
+                        {product.sizeAr}
+                      </span>
                     </div>
-                    <div className="flex gap-2">
-                      <Link
-                        href={`/products/${product.id}`}
-                        className="text-xs text-gray-600 hover:text-amber-800 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition"
-                      >
-                        التفاصيل
-                      </Link>
-                      <button
-                        onClick={() => addToCart({ ...product, quantity: 1 })}
-                        className="text-xs bg-[#5C6348] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#4a503a] transition active:scale-95"
-                      >
-                        إضافة للسلة
-                      </button>
-                    </div>
+                    <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed mb-4">
+                      {product.descriptionAr}
+                    </p>
                   </div>
                 </div>
-              ))
-            ) : (
-              <p className="col-span-full text-center text-gray-400 py-12">جاري تحميل المنتجات...</p>
-            )}
+
+                <div className="p-5 pt-0 flex items-center justify-between border-t border-gray-50 mt-auto">
+                  <div className="text-amber-900 font-bold text-lg">
+                    {product.priceSdg.toLocaleString()} <span className="text-xs font-normal">ج.س</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Link
+                      href={`/products/${product.id}`}
+                      className="text-xs text-gray-600 hover:text-amber-800 px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition"
+                    >
+                      التفاصيل
+                    </Link>
+                    <button
+                      onClick={() => addToCart({ ...product, quantity: 1 })}
+                      className="text-xs bg-[#5C6348] text-white font-semibold px-4 py-2 rounded-lg hover:bg-[#4a503a] transition active:scale-95"
+                    >
+                      إضافة للسلة
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </section>
 
@@ -178,7 +202,7 @@ export default function HomePage() {
         </section>
       </div>
 
-      {/* الفوتر البسيط السريع */}
+      {/* الفوتر */}
       <footer className="bg-white border-t border-gray-200 py-6 text-center text-xs text-gray-500">
         <p>جميع الحقوق محفوظة © {new Date().getFullYear()} - صابون الجنة (Paradise Soap)</p>
       </footer>
