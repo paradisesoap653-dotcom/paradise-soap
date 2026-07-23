@@ -4,7 +4,9 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 
 export interface CartItem {
   id: string | number;
+  productId?: string | number;
   nameAr: string;
+  nameEn?: string;
   priceSdg: number;
   sizeAr?: string;
   image?: string;
@@ -79,26 +81,37 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const addToCart = (product: any) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const itemId = product.id || product.productId;
+      const existing = prev.find((item) => (item.id || item.productId) === itemId);
       if (existing) {
         return prev.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          (item.id || item.productId) === itemId
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
-      return [...prev, { ...product, quantity: 1 }];
+      return [
+        ...prev,
+        {
+          ...product,
+          id: itemId,
+          productId: itemId,
+          quantity: 1,
+        },
+      ];
     });
     setIsCartOpen(true);
   };
 
   const removeFromCart = (id: string | number) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+    setCart((prev) => prev.filter((item) => item.id !== id && item.productId !== id));
   };
 
   const updateQuantity = (id: string | number, delta: number) => {
     setCart((prev) =>
       prev
         .map((item) => {
-          if (item.id === id) {
+          if (item.id === id || item.productId === id) {
             const newQty = item.quantity + delta;
             return newQty > 0 ? { ...item, quantity: newQty } : null;
           }
