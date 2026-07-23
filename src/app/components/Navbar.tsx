@@ -52,6 +52,9 @@ export default function Navbar() {
             <a href="#products" className="hover:text-amber-800 transition-colors">
               المنتجات
             </a>
+            <Link href="/add-product" className="text-amber-800 hover:text-amber-600 font-bold transition-colors flex items-center gap-1">
+              ➕ إضافة منتج
+            </Link>
             <a href="#about" className="hover:text-amber-800 transition-colors">
               عن صابون الجنة
             </a>
@@ -107,6 +110,13 @@ export default function Navbar() {
           >
             المنتجات
           </a>
+          <Link 
+            href="/add-product" 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="block py-2 text-amber-800 font-bold hover:text-amber-600 border-b border-gray-50"
+          >
+            ➕ إضافة منتج
+          </Link>
           <a 
             href="#about" 
             onClick={() => setIsMobileMenuOpen(false)}
