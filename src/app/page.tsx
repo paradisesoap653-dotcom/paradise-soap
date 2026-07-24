@@ -18,8 +18,19 @@ export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
 
   useEffect(() => {
+    // التقاط حدث إمكانية تثبيت التطبيق
+    const handleBeforeInstallPrompt = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
     const fetchProducts = async () => {
       try {
         const script = document.createElement('script');
@@ -46,7 +57,21 @@ export default function HomePage() {
     };
 
     fetchProducts();
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
   }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setShowInstallBtn(false);
+    }
+    setDeferredPrompt(null);
+  };
 
   const scrollToProducts = () => {
     const el = document.getElementById('products-section');
@@ -77,15 +102,50 @@ export default function HomePage() {
           برادايس سوب
         </div>
 
-        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        {/* الأدوات العلوية (زر التثبيت، اللغة، وإضافة منتج) */}
+        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+          
+          {/* أيقونة التثبيت الفورية (تظهر إذا كان المتصفح يدعم التثبيت) */}
+          {showInstallBtn && (
+            <button
+              onClick={handleInstallClick}
+              title="تثبيت التطبيق"
+              style={{
+                backgroundColor: '#28a745',
+                color: '#fff',
+                border: 'none',
+                padding: '5px 10px',
+                borderRadius: '15px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '4px'
+              }}
+            >
+              📲 تثبيت
+            </button>
+          )}
+
           <span style={{ fontSize: '12px', border: '1px solid #ccc', padding: '3px 8px', borderRadius: '12px' }}>EN</span>
           <a href="/add-product" title="إضافة منتج" style={{ textDecoration: 'none', fontSize: '20px' }}>🛍️</a>
         </div>
 
-        {/* القائمة المنسدلة المكتملة */}
+        {/* القائمة المنسدلة */}
         {menuOpen && (
           <div style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, width: '200px' }}>
             <a href="/" style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>الصفحة الرئيسية</a>
+            
+            {showInstallBtn && (
+              <button
+                onClick={() => { setMenuOpen(false); handleInstallClick(); }}
+                style={{ width: '100%', textAlign: 'right', background: 'none', border: 'none', padding: '12px 15px', color: '#28a745', fontWeight: 'bold', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+              >
+                📲 تثبيت التطبيق على التلفون
+              </button>
+            )}
+
             <a href="#products-section" onClick={() => { setMenuOpen(false); scrollToProducts(); }} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>جميع المنتجات</a>
             <a href="/add-product" style={{ display: 'block', padding: '12px 15px', color: '#28a745', textDecoration: 'none', fontWeight: 'bold', borderBottom: '1px solid #eee' }}>➕ إضافة منتج جديد</a>
             <a href="#about" onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>عن المتجر</a>
