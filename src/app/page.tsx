@@ -1,15 +1,23 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // ضع رقم هاتفك مع مفتاح الدولة هنا (مثال: السودان 249...)
+  // ضع رقم هاتفك المباشر هنا مع المفتاح الدولي
   const whatsappNumber = "249123456789"; 
 
+  // دالة التمرير السلس للتحرك داخل الصفحة بنجاح في الموبايل
+  const scrollToSection = (id: string) => {
+    setIsMenuOpen(false);
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <main className="min-h-screen bg-[#faf8f5] text-[#2c3e2e]">
+    <main className="min-h-screen bg-[#faf8f5] text-[#2c3e2e] dir-rtl">
       {/* Top Banner */}
       <div className="bg-[#5c3447] text-white text-xs md:text-sm py-2 text-center px-4 font-medium">
         ✨ هل لديك منتجات طبيعية؟ انضم إلى Paradise Soap واعرضها مجاناً!
@@ -33,10 +41,18 @@ export default function HomePage() {
       {/* Dropdown Menu */}
       {isMenuOpen && (
         <div className="bg-white border-b p-4 space-y-3 font-medium text-sm text-right">
-          <a href="#" onClick={() => setIsMenuOpen(false)} className="block py-1 hover:text-[#5a6b48]">الصفحة الرئيسية</a>
-          <a href="#products" onClick={() => setIsMenuOpen(false)} className="block py-1 hover:text-[#5a6b48]">جميع المنتجات</a>
-          <a href="#seller-section" onClick={() => setIsMenuOpen(false)} className="block py-1 text-green-700 font-bold">+ انضم كبائع</a>
-          <a href="#footer" onClick={() => setIsMenuOpen(false)} className="block py-1 hover:text-[#5a6b48]">اتصل بنا</a>
+          <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="block w-full text-right py-1 hover:text-[#5a6b48]">
+            الصفحة الرئيسية
+          </button>
+          <button onClick={() => scrollToSection('products')} className="block w-full text-right py-1 hover:text-[#5a6b48]">
+            جميع المنتجات
+          </button>
+          <button onClick={() => scrollToSection('seller-section')} className="block w-full text-right py-1 text-green-700 font-bold">
+            + انضم كبائع
+          </button>
+          <button onClick={() => scrollToSection('footer')} className="block w-full text-right py-1 hover:text-[#5a6b48]">
+            اتصل بنا
+          </button>
         </div>
       )}
 
@@ -61,18 +77,18 @@ export default function HomePage() {
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-            <a 
-              href="#products" 
+            <button 
+              onClick={() => scrollToSection('products')} 
               className="w-full sm:w-auto bg-white text-[#5a6b48] font-bold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition"
             >
               تسوق الآن
-            </a>
-            <a 
-              href="#seller-section" 
+            </button>
+            <button 
+              onClick={() => scrollToSection('seller-section')} 
               className="w-full sm:w-auto bg-transparent border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white/10 transition"
             >
               انضم كبائع 🌿
-            </a>
+            </button>
           </div>
 
           {/* Stats */}
@@ -99,7 +115,7 @@ export default function HomePage() {
           🌿 منتجاتنا المميزة
         </h2>
         
-        {/* شبكة عرض المنتجات */}
+        {/* كروت المنتجات */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white border rounded-2xl p-4 shadow-sm text-right">
             <div className="w-full h-48 bg-gray-100 rounded-xl mb-4 flex items-center justify-center text-gray-400">
@@ -108,10 +124,11 @@ export default function HomePage() {
             <h3 className="font-bold text-lg mb-1">صابون زيت الزيتون الطبيعي</h3>
             <p className="text-xs text-gray-500 mb-3">مصنوع يدوياً 100% لتنعيم وترطيب البشرة.</p>
             <div className="flex items-center justify-between">
-              <span className="font-bold text-[#5a6b48]">جديد</span>
+              <span className="font-bold text-[#5a6b48]">مميز</span>
               <a 
                 href={`https://wa.me/${whatsappNumber}?text=أرغب%20في%20طلب%20صابون%20زيت%20الزيتون`} 
                 target="_blank" 
+                rel="noreferrer"
                 className="bg-[#5a6b48] text-white text-xs px-4 py-2 rounded-lg font-bold"
               >
                 اطلب عبر الواتساب
@@ -162,7 +179,7 @@ export default function HomePage() {
         <p className="text-gray-300 max-w-md mx-auto">منصتك الأولى للمنتجات والمستحضرات الطبيعية العضوية.</p>
         
         <div className="flex justify-center gap-6 pt-2">
-          <a href={`https://wa.me/${whatsappNumber}`} target="_blank" className="hover:underline">واتساب</a>
+          <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer" className="hover:underline">واتساب</a>
           <a href="#" className="hover:underline">فيسبوك</a>
           <a href="#" className="hover:underline">إنستغرام</a>
         </div>
