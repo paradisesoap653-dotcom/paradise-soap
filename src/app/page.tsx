@@ -1,254 +1,167 @@
-"use client";
+'use client';
 
-import React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import Navbar from "./components/Navbar";
-import { useApp } from "@/context/AppContext";
+import { useState, useEffect } from 'react';
 
-const sampleProducts = [
-  {
-    id: "1",
-    nameAr: "صابون النيم والنعناع الطبيعي",
-    sizeAr: "قطعة 100 جرام",
-    descriptionAr: "صابون طبيعي ينظف البشرة بعمق ويساعد على تهدئة التهابات الجلد والبشرة الحساسة.",
-    priceSdg: 3500,
-    image: "/images/placeholder.jpg",
-  },
-  {
-    id: "2",
-    nameAr: "معجون غسيل الصحون الفائق (بالليمون)",
-    sizeAr: "عبوة 1 كيلو",
-    descriptionAr: "تركيبة مركزة وقوية لإزالة الدهون المستعصية مع حماية فائقة للأيدي.",
-    priceSdg: 4500,
-    image: "/images/placeholder.jpg",
-  },
-  {
-    id: "3",
-    nameAr: "جل استحمام برائحة العود الملكي",
-    sizeAr: "عبوة 500 مل",
-    descriptionAr: "تجربة استحمام فاخرة برائحة العود الأصيل تدوم طويلاً وتمنح بشرتك النعومة.",
-    priceSdg: 6000,
-    image: "/images/placeholder.jpg",
-  },
-];
+const SUPABASE_URL = 'https://lhxebcykgdyxehcyohzk.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeGViY3lrZ2R5eGVoY3lvaHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4MzEwMjgsImV4cCI6MjEwMDQwNzAyOH0.k4FnoyO8nv_PZxPkK8WVhY1pEp-JWBBHGmzAwYSDtGc';
+
+interface Product {
+  id?: number;
+  title: string;
+  price: number;
+  image: string;
+  seller_name?: string;
+  whatsapp?: string;
+}
 
 export default function HomePage() {
-  const { addToCart } = useApp();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+        script.onload = async () => {
+          if ((window as any).supabase) {
+            const client = (window as any).supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            const { data, error } = await client
+              .from('products')
+              .select('*')
+              .order('id', { ascending: false });
+
+            if (!error && data) {
+              setProducts(data);
+            }
+          }
+          setLoading(false);
+        };
+        document.head.appendChild(script);
+      } catch (err) {
+        console.error(err);
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  const scrollToProducts = () => {
+    const el = document.getElementById('products-section');
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
 
   return (
-    <div style={{ backgroundColor: "#FAF7F2", color: "#2D3748", fontFamily: "sans-serif", direction: "rtl", minHeight: "100vh", position: "relative" }}>
-      {/* الهيدر العلوي */}
-      <Navbar />
-
-      {/* 1. قسم الواجهة الرئيسي (Hero) */}
-      <section style={{ backgroundColor: "#5C6348", color: "#FFFFFF", padding: "40px 16px 50px", textAlign: "center", borderBottomLeftRadius: "30px", borderBottomRightRadius: "30px" }}>
-        <div style={{ maxWidth: "600px", margin: "0 auto" }}>
-          <span style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "#FEF3C7", padding: "6px 16px", borderRadius: "20px", fontSize: "12px", display: "inline-block", marginBottom: "15px" }}>
-            ✨ منتجات طبيعية وعضوية 100%
-          </span>
-
-          <h1 style={{ fontSize: "36px", fontWeight: "bold", margin: "5px 0", letterSpacing: "1px" }}>
-            Paradise Soap
-          </h1>
-          <h2 style={{ fontSize: "22px", color: "#FDE68A", fontWeight: "600", margin: "0 0 15px 0" }}>
-            برادايس سوب — صابون الجنة
-          </h2>
-
-          <p style={{ color: "#F3F4F6", fontSize: "14px", lineHeight: "1.6", margin: "0 auto 20px", maxWidth: "450px" }}>
-            منتجاتنا المصنوعة يدوياً بأجود الزيوت والمكونات الطبيعية لتغذية وترطيب بشرتك كل يوم.
-          </p>
-
-          <a href="#products" style={{ backgroundColor: "#FFFFFF", color: "#5C6348", fontWeight: "bold", padding: "12px 30px", borderRadius: "25px", display: "inline-block", textDecoration: "none", fontSize: "14px", boxShadow: "0 4px 10px rgba(0,0,0,0.1)" }}>
-            تسوق الآن
-          </a>
-
-          <div style={{ display: "flex", justifyContent: "space-around", marginTop: "30px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.2)", fontSize: "12px" }}>
-            <div>
-              <div style={{ fontSize: "18px", fontWeight: "bold" }}>100%</div>
-              <div style={{ color: "#FDE68A" }}>طبيعي</div>
-            </div>
-            <div>
-              <div style={{ fontSize: "18px", fontWeight: "bold" }}>+500</div>
-              <div style={{ color: "#FDE68A" }}>عميل سعيد</div>
-            </div>
-            <div>
-              <div style={{ fontSize: "18px", fontWeight: "bold" }}>4.9★</div>
-              <div style={{ color: "#FDE68A" }}>تقييم عام</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2. قسم المميزات */}
-      <section style={{ maxWidth: "900px", margin: "-20px auto 40px", padding: "0 16px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }}>
-          <div style={{ backgroundColor: "#FFFFFF", padding: "20px", borderRadius: "20px", textAlign: "center", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
-            <div style={{ fontSize: "24px", marginBottom: "8px" }}>🌱</div>
-            <h3 style={{ fontSize: "15px", fontWeight: "bold", margin: "0 0 5px" }}>مكونات طبيعية 100%</h3>
-            <p style={{ fontSize: "12px", color: "#718096", margin: 0, lineHeight: "1.5" }}>خالية تماماً من المواد الكيميائية الضارة لضمان صحة ونضارة بشرتك.</p>
-          </div>
-
-          <div style={{ backgroundColor: "#FFFFFF", padding: "20px", borderRadius: "20px", textAlign: "center", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
-            <div style={{ fontSize: "24px", marginBottom: "8px" }}>✨</div>
-            <h3 style={{ fontSize: "15px", fontWeight: "bold", margin: "0 0 5px" }}>صناعة يدوية فاخرة</h3>
-            <p style={{ fontSize: "12px", color: "#718096", margin: 0, lineHeight: "1.5" }}>كل قطعة تُصنع بحب وعناية فائقة لتمنحك تجربة استخدام فريدة.</p>
-          </div>
-
-          <div style={{ backgroundColor: "#FFFFFF", padding: "20px", borderRadius: "20px", textAlign: "center", boxShadow: "0 4px 15px rgba(0,0,0,0.03)" }}>
-            <div style={{ fontSize: "24px", marginBottom: "8px" }}>🚚</div>
-            <h3 style={{ fontSize: "15px", fontWeight: "bold", margin: "0 0 5px" }}>توصيل سريع وآمن</h3>
-            <p style={{ fontSize: "12px", color: "#718096", margin: 0, lineHeight: "1.5" }}>يصلك طلبك حتى باب المنزل في أسرع وقت ممكن.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. قسم المنتجات المتميزة */}
-      <section id="products" style={{ maxWidth: "1000px", margin: "0 auto", padding: "20px 16px 60px" }}>
-        <div style={{ textAlign: "center", marginBottom: "30px" }}>
-          <h2 style={{ fontSize: "24px", fontWeight: "bold", margin: "0 0 5px", color: "#1A202C" }}>منتجاتنا المتميزة</h2>
-          <p style={{ fontSize: "13px", color: "#718096", margin: 0 }}>تصفح تشكيلتنا المختارة من الصابون ومستحضرات التجميل الطبيعية</p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-          {sampleProducts.map((product) => (
-            <div key={product.id} style={{ backgroundColor: "#FFFFFF", borderRadius: "20px", overflow: "hidden", boxShadow: "0 4px 15px rgba(0,0,0,0.04)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <div style={{ position: "relative", height: "180px", backgroundColor: "#F7FAFC" }}>
-                  <Image src={product.image} alt={product.nameAr} fill style={{ objectFit: "cover" }} />
-                  <span style={{ position: "absolute", top: "12px", right: "12px", backgroundColor: "#FFFFFF", color: "#78350F", padding: "4px 12px", borderRadius: "15px", fontSize: "11px", fontWeight: "bold", boxShadow: "0 2px 5px rgba(0,0,0,0.05)" }}>
-                    {product.sizeAr}
-                  </span>
-                </div>
-                <div style={{ padding: "18px" }}>
-                  <h3 style={{ fontSize: "16px", fontWeight: "bold", margin: "0 0 8px", color: "#2D3748" }}>{product.nameAr}</h3>
-                  <p style={{ fontSize: "12px", color: "#718096", margin: 0, lineHeight: "1.6" }}>{product.descriptionAr}</p>
-                </div>
-              </div>
-
-              <div style={{ padding: "15px 18px", borderTop: "1px solid #EDF2F7", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <div style={{ fontSize: "18px", fontWeight: "bold", color: "#78350F" }}>
-                  {product.priceSdg.toLocaleString()} <span style={{ fontSize: "11px", fontWeight: "normal", color: "#A0AEC0" }}>ج.س</span>
-                </div>
-                <div style={{ display: "flex", gap: "8px" }}>
-                  <Link href={`/products/${product.id}`} style={{ padding: "8px 12px", borderRadius: "10px", border: "1px solid #E2E8F0", color: "#4A5568", textDecoration: "none", fontSize: "12px", fontWeight: "500" }}>
-                    التفاصيل
-                  </Link>
-                  <button onClick={() => addToCart({ ...product, quantity: 1 })} style={{ backgroundColor: "#5C6348", color: "#FFFFFF", border: "none", padding: "8px 16px", borderRadius: "10px", fontSize: "12px", fontWeight: "bold", cursor: "pointer" }}>
-                    إضافة للسلة
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 4. قسم الآراء والتقييمات */}
-      <section style={{ backgroundColor: "#EFECE6", padding: "50px 16px" }}>
-        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: "22px", fontWeight: "bold", marginBottom: "25px" }}>آراء عملائنا</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "15px" }}>
-            <div style={{ backgroundColor: "#FFFFFF", padding: "20px", borderRadius: "20px", textAlign: "right", boxShadow: "0 2px 10px rgba(0,0,0,0.02)" }}>
-              <div style={{ color: "#F59E0B", marginBottom: "8px" }}>★★★★★</div>
-              <p style={{ fontSize: "12px", color: "#4A5568", lineHeight: "1.6", margin: "0 0 10px" }}>"الصابون ممتاز جداً ونعومته واضحة على البشرة من أول استخدام. تسلم الأيادي!"</p>
-              <div style={{ fontSize: "12px", fontWeight: "bold", color: "#2D3748" }}>— سارة أحمد</div>
-            </div>
-
-            <div style={{ backgroundColor: "#FFFFFF", padding: "20px", borderRadius: "20px", textAlign: "right", boxShadow: "0 2px 10px rgba(0,0,0,0.02)" }}>
-              <div style={{ color: "#F59E0B", marginBottom: "8px" }}>★★★★★</div>
-              <p style={{ fontSize: "12px", color: "#4A5568", lineHeight: "1.6", margin: "0 0 10px" }}>"رائحة زكية وجودة عالية جداً والتوصيل كان سريع. بالتأكيد سأكرر التجربة."</p>
-              <div style={{ fontSize: "12px", fontWeight: "bold", color: "#2D3748" }}>— منى الباقر</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. قسم التواصل الاجتماعي */}
-      <section id="contact" style={{ backgroundColor: "#FFFFFF", padding: "40px 16px", borderTop: "1px solid #EDF2F7" }}>
-        <div style={{ maxWidth: "800px", margin: "0 auto", textAlign: "center" }}>
-          <h2 style={{ fontSize: "20px", fontWeight: "bold", color: "#2D3748", marginBottom: "10px" }}>تواصل معنا</h2>
-          <p style={{ fontSize: "13px", color: "#718096", marginBottom: "25px" }}>يسعدنا خدمة عملائنا الكرام دائماً</p>
-
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "15px", marginBottom: "25px", fontSize: "13px" }}>
-            <a href="tel:0913009060" style={{ backgroundColor: "#FAF7F2", padding: "10px 18px", borderRadius: "15px", color: "#5C6348", fontWeight: "bold", textDecoration: "none", border: "1px solid #E2E8F0" }}>
-              📞 0913009060
-            </a>
-            <a href="tel:0114537190" style={{ backgroundColor: "#FAF7F2", padding: "10px 18px", borderRadius: "15px", color: "#5C6348", fontWeight: "bold", textDecoration: "none", border: "1px solid #E2E8F0" }}>
-              📞 0114537190
-            </a>
-            <a href="mailto:paradisesoap365@gmail.com" style={{ backgroundColor: "#FAF7F2", padding: "10px 18px", borderRadius: "15px", color: "#5C6348", fontWeight: "bold", textDecoration: "none", border: "1px solid #E2E8F0" }}>
-              ✉️ paradisesoap365@gmail.com
-            </a>
-          </div>
-
-          <div style={{ display: "flex", justifyContent: "center", gap: "10px", flexWrap: "wrap" }}>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#1877F2", color: "#FFFFFF", padding: "10px 18px", borderRadius: "20px", fontWeight: "bold", textDecoration: "none", fontSize: "12px" }}>
-              🔵 فيسبوك
-            </a>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#000000", color: "#FFFFFF", padding: "10px 18px", borderRadius: "20px", fontWeight: "bold", textDecoration: "none", fontSize: "12px" }}>
-              🎵 تيك توك
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" style={{ backgroundColor: "#FF0000", color: "#FFFFFF", padding: "10px 18px", borderRadius: "20px", fontWeight: "bold", textDecoration: "none", fontSize: "12px" }}>
-              🔴 يوتيوب
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* 🔴 🟢 أزرار الاتصال والواتساب العائمة (Floating Action Buttons) */}
-      <div style={{ position: "fixed", bottom: "20px", left: "20px", zIndex: 999, display: "flex", flexDirection: "column", gap: "12px" }}>
-        
-        {/* زر الواتساب العائم */}
-        <a 
-          href="https://wa.me/249913009060" 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          aria-label="تواصل معنا عبر الواتساب"
-          style={{ 
-            backgroundColor: "#25D366", 
-            color: "#FFFFFF", 
-            width: "52px", 
-            height: "52px", 
-            borderRadius: "50%", 
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            boxShadow: "0 4px 15px rgba(37, 211, 102, 0.4)", 
-            textDecoration: "none", 
-            fontSize: "26px" 
-          }}
-        >
-          💬
-        </a>
-
-        {/* زر الاتصال الهاتفي العائم */}
-        <a 
-          href="tel:0913009060" 
-          aria-label="اتصل بنا المباشر"
-          style={{ 
-            backgroundColor: "#5C6348", 
-            color: "#FFFFFF", 
-            width: "52px", 
-            height: "52px", 
-            borderRadius: "50%", 
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            boxShadow: "0 4px 15px rgba(92, 99, 72, 0.4)", 
-            textDecoration: "none", 
-            fontSize: "22px" 
-          }}
-        >
-          📞
-        </a>
-
+    <div style={{ fontFamily: 'sans-serif', direction: 'rtl', backgroundColor: '#faf8f5', minHeight: '100vh', color: '#333' }}>
+      
+      {/* الشريط العلوي الإعلاني */}
+      <div style={{ backgroundColor: '#6d4c2b', color: '#fff', textAlign: 'center', padding: '8px 15px', fontSize: '13px' }}>
+        ✨ منتجات طبيعية وعضوية 100% لتغذية وترطيب البشرة — شحن سريع لجميع الولايات ✨
       </div>
 
-      {/* الفوتر */}
-      <footer style={{ backgroundColor: "#FAF7F2", borderTop: "1px solid #E2E8F0", padding: "20px 16px 80px", textAlign: "center", fontSize: "12px", color: "#A0AEC0" }}>
-        <p style={{ margin: 0 }}>جميع الحقوق محفوظة © {new Date().getFullYear()} — صابون الجنة (Paradise Soap)</p>
-      </footer>
+      {/* القائمة العلوية Header */}
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #eee', backgroundColor: '#fff' }}>
+        <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4d5d3b' }}>
+          صابون الجنة
+        </div>
+        <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+          <span style={{ fontSize: '12px', border: '1px solid #ccc', padding: '3px 8px', borderRadius: '12px' }}>EN</span>
+          <span style={{ fontSize: '20px', cursor: 'pointer' }}>🛍️</span>
+        </div>
+      </header>
+
+      {/* القسم الرئيسي Banner */}
+      <section style={{ backgroundColor: '#5c6347', color: '#fff', textAlign: 'center', padding: '50px 20px', borderRadius: '0 0 25px 25px' }}>
+        <span style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: '5px 15px', borderRadius: '15px', fontSize: '13px' }}>
+          ✨ منتجات طبيعية وعضوية 100%
+        </span>
+        <h1 style={{ fontSize: '36px', margin: '20px 0 10px 0', fontWeight: 'bold' }}>Paradise Soap</h1>
+        <h2 style={{ fontSize: '22px', fontWeight: 'normal', color: '#f0e6d2', marginBottom: '15px' }}>برادايس سوب — صابون الجنة</h2>
+        <p style={{ maxWidth: '600px', margin: '0 auto 25px auto', lineHeight: '1.6', fontSize: '15px', color: '#e2e8d5' }}>
+          منتجاتنا المصنوعة يدوياً بأجود الزيوت والمكونات الطبيعية لتغذية وترطيب بشرتك كل يوم.
+        </p>
+        <button
+          onClick={scrollToProducts}
+          style={{ backgroundColor: '#fff', color: '#333', border: 'none', padding: '12px 35px', borderRadius: '25px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}
+        >
+          تسوق الآن
+        </button>
+
+        {/* إحصائيات */}
+        <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginTop: '35px' }}>
+          <div>
+            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>100%</div>
+            <div style={{ fontSize: '12px', opacity: 0.8 }}>طبيعي</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>+500</div>
+            <div style={{ fontSize: '12px', opacity: 0.8 }}>عميل سعيد</div>
+          </div>
+          <div>
+            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>★ 4.9</div>
+            <div style={{ fontSize: '12px', opacity: 0.8 }}>تقييم عام</div>
+          </div>
+        </div>
+      </section>
+
+      {/* قسم عرض المنتجات */}
+      <section id="products-section" style={{ maxWidth: '1000px', margin: '40px auto', padding: '0 20px' }}>
+        <h2 style={{ textAlign: 'center', color: '#4d5d3b', marginBottom: '30px', fontSize: '26px' }}>
+          منتجاتنا المميزة 🌿
+        </h2>
+
+        {loading ? (
+          <p style={{ textAlign: 'center', color: '#888' }}>جاري تحميل المنتجات...</p>
+        ) : products.length === 0 ? (
+          <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '30px', borderRadius: '15px' }}>
+            <p style={{ color: '#666', fontSize: '16px' }}>لا توجد منتجات معروضة حالياً.</p>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' }}>
+            {products.map((item, index) => (
+              <div key={item.id || index} style={{ backgroundColor: '#fff', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div>
+                  <div style={{ height: '200px', backgroundColor: '#f0f0f0', overflow: 'hidden' }}>
+                    <img
+                      src={item.image || 'https://via.placeholder.com/200'}
+                      alt={item.title}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <div style={{ padding: '15px' }}>
+                    <h3 style={{ fontSize: '18px', margin: '0 0 10px 0', color: '#333' }}>{item.title}</h3>
+                    <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#28a745', margin: '0 0 10px 0' }}>
+                      {item.price} جنيه / $
+                    </p>
+                    {item.seller_name && (
+                      <p style={{ fontSize: '12px', color: '#777', margin: 0 }}>البائع: {item.seller_name}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div style={{ padding: '0 15px 15px 15px' }}>
+                  {item.whatsapp ? (
+                    <a
+                      href={`https://wa.me/${item.whatsapp}?text=${encodeURIComponent('السلام عليكم، أرغب في طلب منتج: ' + item.title)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'block', textAlign: 'center', backgroundColor: '#25D366', color: '#fff', textDecoration: 'none', padding: '10px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px' }}
+                    >
+                      طلب عبر الواتساب 💬
+                    </a>
+                  ) : (
+                    <button style={{ width: '100%', backgroundColor: '#4d5d3b', color: '#fff', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer' }}>
+                      إضافة للسلة 🛍️
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+
     </div>
   );
 }
