@@ -1,246 +1,106 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-
-const SUPABASE_URL = 'https://lhxebcykgdyxehcyohzk.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeGViY3lrZ2R5eGVoY3lvaHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4MzEwMjgsImV4cCI6MjEwMDQwNzAyOH0.k4FnoyO8nv_PZxPkK8WVhY1pEp-JWBBHGmzAwYSDtGc';
-
-interface Product {
-  id?: number;
-  title: string;
-  price: number;
-  image: string;
-  seller_name?: string;
-  whatsapp?: string;
-}
+import Link from 'next/link';
 
 export default function HomePage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-
-  useEffect(() => {
-    const handleBeforeInstallPrompt = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-    const fetchProducts = async () => {
-      try {
-        const script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
-        script.onload = async () => {
-          if ((window as any).supabase) {
-            const client = (window as any).supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            const { data, error } = await client
-              .from('products')
-              .select('*')
-              .order('id', { ascending: false });
-
-            if (!error && data) {
-              setProducts(data);
-            }
-          }
-          setLoading(false);
-        };
-        document.head.appendChild(script);
-      } catch (err) {
-        console.error(err);
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-
-    return () => {
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    };
-  }, []);
-
-  const handleInstallClick = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        setDeferredPrompt(null);
-      }
-    } else {
-      alert('لتثبيت التطبيق على هاتفك:\nاضغط على خيارات المتصفح (⋮) ثم اختر "تثبيت التطبيق" أو "الإضافة إلى الشاشة الرئيسية".');
-    }
-  };
-
-  const scrollToProducts = () => {
-    const el = document.getElementById('products-section');
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
-    <div style={{ fontFamily: 'sans-serif', direction: 'rtl', backgroundColor: '#faf8f5', minHeight: '100vh', color: '#333' }}>
-      
-      {/* الشريط العلوي الإعلاني */}
-      <div style={{ backgroundColor: '#6d4c2b', color: '#fff', textAlign: 'center', padding: '8px 15px', fontSize: '13px' }}>
-        ✨ منتجات طبيعية وعضوية 100% لتغذية وترطيب البشرة — شحن سريع لجميع الولايات ✨
+    <main className="min-h-screen bg-[#faf8f5] text-[#2c3e2e]">
+      {/* Top Banner */}
+      <div className="bg-[#5c3447] text-white text-xs md:text-sm py-2 text-center px-4 font-medium">
+        ✨ هل لديك منتجات طبيعية؟ انضم إلى Paradise Soap واعرضها مجاناً!
       </div>
 
-      {/* القائمة العلوية Header */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #eee', backgroundColor: '#fff', position: 'relative' }}>
-        
-        {/* زر القائمة الجانبية */}
-        <button 
-          onClick={() => setMenuOpen(!menuOpen)}
-          style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
-        >
-          ☰
-        </button>
-
-        {/* اسم المتجر */}
-        <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4d5d3b' }}>
-          برادايس سوب
-        </div>
-
-        {/* الأدوات العلوية */}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+      {/* Hero Section */}
+      <section className="relative bg-[#5a6b48] text-white py-16 px-6 text-center rounded-b-3xl shadow-sm">
+        <div className="max-w-3xl mx-auto space-y-6">
+          <span className="inline-block bg-white/20 backdrop-blur-md px-4 py-1 rounded-full text-xs font-semibold">
+            ✨ منتجات طبيعية وعضوية 100%
+          </span>
           
-          {/* زر التثبيت اليدوي المباشر (ظاهر دائماً) */}
-          <button
-            onClick={handleInstallClick}
-            title="تثبيت التطبيق"
-            style={{
-              backgroundColor: '#28a745',
-              color: '#fff',
-              border: 'none',
-              padding: '6px 12px',
-              borderRadius: '20px',
-              fontSize: '12px',
-              fontWeight: 'bold',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              boxShadow: '0 2px 5px rgba(0,0,0,0.1)'
-            }}
-          >
-            📲 تثبيت
-          </button>
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
+            Paradise Soap
+          </h1>
+          
+          <p className="text-lg md:text-xl font-medium opacity-90">
+            برادايس سوب — صابون ومستحضرات التجميل
+          </p>
+          
+          <p className="text-sm md:text-base max-w-xl mx-auto opacity-80 leading-relaxed">
+            منتجاتنا المصنوعة يدوياً بأجود الزيوت والمكونات الطبيعية لتغذية وترطيب بشرتك كل يوم.
+          </p>
 
-          <span style={{ fontSize: '12px', border: '1px solid #ccc', padding: '3px 8px', borderRadius: '12px' }}>EN</span>
-          <a href="/add-product" title="إضافة منتج" style={{ textDecoration: 'none', fontSize: '20px' }}>🛍️</a>
-        </div>
-
-        {/* القائمة المنسدلة */}
-        {menuOpen && (
-          <div style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, width: '220px' }}>
-            <a href="/" style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>الصفحة الرئيسية</a>
-            
-            <button
-              onClick={() => { setMenuOpen(false); handleInstallClick(); }}
-              style={{ width: '100%', textAlign: 'right', background: 'none', border: 'none', padding: '12px 15px', color: '#28a745', fontWeight: 'bold', cursor: 'pointer', borderBottom: '1px solid #eee' }}
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <Link 
+              href="#products" 
+              className="w-full sm:w-auto bg-white text-[#5a6b48] font-bold px-8 py-3 rounded-full shadow-lg hover:bg-gray-100 transition duration-200"
             >
-              📲 تثبيت التطبيق على التلفون
-            </button>
-
-            <a href="#products-section" onClick={() => { setMenuOpen(false); scrollToProducts(); }} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>جميع المنتجات</a>
-            <a href="/add-product" style={{ display: 'block', padding: '12px 15px', color: '#28a745', textDecoration: 'none', fontWeight: 'bold', borderBottom: '1px solid #eee' }}>➕ إضافة منتج جديد</a>
-            <a href="#about" onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>عن المتجر</a>
-            <a href="#contact" onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none' }}>اتصل بنا</a>
+              تسوق الآن
+            </Link>
+            <Link 
+              href="/become-a-seller" 
+              className="w-full sm:w-auto bg-transparent border-2 border-white text-white font-bold px-8 py-3 rounded-full hover:bg-white/10 transition duration-200"
+            >
+              انضم كبائع 🌿
+            </Link>
           </div>
-        )}
-      </header>
 
-      {/* القسم الرئيسي Banner */}
-      <section style={{ backgroundColor: '#5c6347', color: '#fff', textAlign: 'center', padding: '50px 20px', borderRadius: '0 0 25px 25px' }}>
-        <span style={{ backgroundColor: 'rgba(255,255,255,0.2)', padding: '5px 15px', borderRadius: '15px', fontSize: '13px' }}>
-          ✨ منتجات طبيعية وعضوية 100%
-        </span>
-        <h1 style={{ fontSize: '36px', margin: '20px 0 10px 0', fontWeight: 'bold' }}>Paradise Soap</h1>
-        <h2 style={{ fontSize: '22px', fontWeight: 'normal', color: '#f0e6d2', marginBottom: '15px' }}>برادايس سوب — صابون ومستحضرات التجميل</h2>
-        <p style={{ maxWidth: '600px', margin: '0 auto 25px auto', lineHeight: '1.6', fontSize: '15px', color: '#e2e8d5' }}>
-          منتجاتنا المصنوعة يدوياً بأجود الزيوت والمكونات الطبيعية لتغذية وترطيب بشرتك كل يوم.
-        </p>
-        <button
-          onClick={scrollToProducts}
-          style={{ backgroundColor: '#fff', color: '#333', border: 'none', padding: '12px 35px', borderRadius: '25px', fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }}
-        >
-          تسوق الآن
-        </button>
-
-        {/* إحصائيات */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginTop: '35px' }}>
-          <div>
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>100%</div>
-            <div style={{ fontSize: '12px', opacity: 0.8 }}>طبيعي</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>+500</div>
-            <div style={{ fontSize: '12px', opacity: 0.8 }}>عميل سعيد</div>
-          </div>
-          <div>
-            <div style={{ fontSize: '20px', fontWeight: 'bold' }}>★ 4.9</div>
-            <div style={{ fontSize: '12px', opacity: 0.8 }}>تقييم عام</div>
+          {/* Stats */}
+          <div className="grid grid-cols-3 gap-4 pt-8 border-t border-white/20 max-w-lg mx-auto">
+            <div>
+              <div className="text-2xl font-bold">100%</div>
+              <div className="text-xs opacity-75">طبيعي</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">+500</div>
+              <div className="text-xs opacity-75">عميل سعيد</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">★ 4.9</div>
+              <div className="text-xs opacity-75">تقييم عام</div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* قسم عرض المنتجات */}
-      <section id="products-section" style={{ maxWidth: '1000px', margin: '40px auto', padding: '0 20px' }}>
-        <h2 style={{ textAlign: 'center', color: '#4d5d3b', marginBottom: '30px', fontSize: '26px' }}>
-          منتجاتنا المميزة 🌿
+      {/* Featured Products */}
+      <section id="products" className="max-w-6xl mx-auto py-12 px-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 flex items-center justify-center gap-2">
+          🌿 منتجاتنا المميزة
         </h2>
-
-        {loading ? (
-          <p style={{ textAlign: 'center', color: '#888' }}>جاري تحميل المنتجات...</p>
-        ) : products.length === 0 ? (
-          <div style={{ textAlign: 'center', backgroundColor: '#fff', padding: '30px', borderRadius: '15px' }}>
-            <p style={{ color: '#666', fontSize: '16px' }}>لا توجد منتجات معروضة حالياً.</p>
-          </div>
-        ) : (
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '20px' }}>
-            {products.map((item, index) => (
-              <div key={item.id || index} style={{ backgroundColor: '#fff', borderRadius: '15px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <div>
-                  <div style={{ height: '200px', backgroundColor: '#f0f0f0', overflow: 'hidden' }}>
-                    <img
-                      src={item.image || 'https://via.placeholder.com/200'}
-                      alt={item.title}
-                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                    />
-                  </div>
-                  <div style={{ padding: '15px' }}>
-                    <h3 style={{ fontSize: '18px', margin: '0 0 10px 0', color: '#333' }}>{item.title}</h3>
-                    <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#28a745', margin: '0 0 10px 0' }}>
-                      {item.price} جنيه
-                    </p>
-                    {item.seller_name && (
-                      <p style={{ fontSize: '12px', color: '#777', margin: 0 }}>البائع: {item.seller_name}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div style={{ padding: '0 15px 15px 15px' }}>
-                  {item.whatsapp ? (
-                    <a
-                      href={`https://wa.me/${item.whatsapp}?text=${encodeURIComponent('السلام عليكم، أرغب في طلب منتج: ' + item.title)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ display: 'block', textAlign: 'center', backgroundColor: '#25D366', color: '#fff', textDecoration: 'none', padding: '10px', borderRadius: '8px', fontWeight: 'bold', fontSize: '14px' }}
-                    >
-                      طلب عبر الواتساب 💬
-                    </a>
-                  ) : (
-                    <button style={{ width: '100%', backgroundColor: '#4d5d3b', color: '#fff', border: 'none', padding: '10px', borderRadius: '8px', cursor: 'pointer' }}>
-                      إضافة للسلة 🛍️
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* قسم كروت المنتجات يوضع هنا */}
       </section>
 
-    </div>
+      {/* Become a Seller Banner Section */}
+      <section className="max-w-4xl mx-auto my-12 mx-4 bg-white border border-[#e2dad1] rounded-2xl p-8 shadow-sm text-center">
+        <div className="inline-block p-3 bg-[#f0f4ec] rounded-full text-2xl mb-4">🌿</div>
+        <h2 className="text-2xl md:text-3xl font-bold text-[#5a6b48] mb-3">
+          هل أنت منتج؟
+        </h2>
+        <p className="text-[#6b7280] max-w-xl mx-auto mb-6 text-sm md:text-base leading-relaxed">
+          حوّل منتجاتك إلى فرصة أكبر للنجاح. انضم إلى Paradise Soap واعرض منتجاتك أمام آلاف العملاء. أضف صور بضائعك، اكتب وصفاً لها، حدّد أسعارها، وابدأ البيع بسهولة.
+        </p>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-right max-w-2xl mx-auto mb-8 text-xs md:text-sm font-medium">
+          <div className="flex items-center gap-2 bg-[#f9f8f6] p-3 rounded-lg border">
+            <span>✅</span> <span>إنشاء متجر مجاني</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#f9f8f6] p-3 rounded-lg border">
+            <span>✅</span> <span>رفع صور المنتجات</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#f9f8f6] p-3 rounded-lg border">
+            <span>✅</span> <span>إدارة سهلة للمبيعات</span>
+          </div>
+          <div className="flex items-center gap-2 bg-[#f9f8f6] p-3 rounded-lg border">
+            <span>✅</span> <span>الوصول لعملاء جدد</span>
+          </div>
+        </div>
+
+        <Link 
+          href="/become-a-seller" 
+          className="inline-block bg-[#5a6b48] text-white font-bold text-lg px-10 py-4 rounded-full shadow-md hover:bg-[#48563a] transition duration-200"
+        >
+          🟢 ابدأ البيع الآن
+        </Link>
+      </section>
+    </main>
   );
 }
