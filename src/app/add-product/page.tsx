@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-// روابط وحسابات مشروعك
 const SUPABASE_URL = 'https://lhxebcykgdyxehcyohzk.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeGViY3lrZ2R5eGVoY3lvaHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4MzEwMjgsImV4cCI6MjEwMDQwNzAyOH0.k4FnoyO8nv_PZxPkK8WVhY1pEp-JWBBHGmzAwYSDtGc';
 
@@ -37,12 +36,11 @@ export default function AddProductPage() {
       const activeSupabase = supabaseClient || ((window as any).supabase ? (window as any).supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
 
       if (!activeSupabase) {
-        throw new Error('جاري الاتصال... يرجى إعادة الضغط على إضافة المنتج.');
+        throw new Error('جاري الاتصال... اضغط مرة أخرى.');
       }
 
       let imageUrl = '';
 
-      // 1. رفع الصورة إلى Supabase Storage
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop() || 'jpg';
         const cleanFileName = `${Date.now()}.${fileExt}`;
@@ -51,9 +49,7 @@ export default function AddProductPage() {
           .from('product-images')
           .upload(cleanFileName, imageFile, { upsert: true });
 
-        if (uploadError) {
-          throw new Error('فشل رفع الصورة: ' + uploadError.message);
-        }
+        if (uploadError) throw new Error('فشل رفع الصورة: ' + uploadError.message);
 
         const { data: urlData } = activeSupabase.storage
           .from('product-images')
@@ -62,7 +58,6 @@ export default function AddProductPage() {
         imageUrl = urlData.publicUrl;
       }
 
-      // 2. إدراج بيانات المنتج في الجدول
       const { error: dbError } = await activeSupabase.from('products').insert([
         {
           title,
@@ -75,14 +70,13 @@ export default function AddProductPage() {
 
       if (dbError) throw dbError;
 
-      setMessage('✅ تم إضافة المنتج بنجاح مع الصورة!');
+      setMessage('✅ تم إضافة المنتج بنجاح!');
       setTitle('');
       setPrice('');
       setImageFile(null);
       setSellerName('');
       setWhatsapp('');
     } catch (error: any) {
-      console.error(error);
       setMessage(`❌ ${error.message || 'حدث خطأ أثناء الإضافة.'}`);
     } finally {
       setLoading(false);
