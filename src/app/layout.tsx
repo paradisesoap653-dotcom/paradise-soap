@@ -1,10 +1,16 @@
 import type { Metadata } from 'next';
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'برادايس سوب',
   description: 'متجر صابون ومستحضرات تجميل طبيعية',
   manifest: '/manifest.json',
   themeColor: '#5c6347',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'برادايس سوب',
+  },
 };
 
 export default function RootLayout({
@@ -17,7 +23,6 @@ export default function RootLayout({
       <head>
         <link rel="manifest" href="/manifest.json" />
         <meta name="theme-color" content="#5c6347" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
