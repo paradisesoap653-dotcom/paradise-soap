@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from 'react';
 
+// ⚠️ ضع رابط مشروعك ومفتاح anon الخاص بك في Supabase هنا بين العلامات
+const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co'; // استبدل هذا برابط Supabase الخاص بك
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // استبدل هذا بالمفتاح الخاص بك
+
 export default function AddProductPage() {
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
@@ -13,13 +17,14 @@ export default function AddProductPage() {
   const [supabaseClient, setSupabaseClient] = useState<any>(null);
 
   useEffect(() => {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+    // جلب القيم إما من المتغيرات أو من الثوابت
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
 
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
     script.onload = () => {
-      if ((window as any).supabase && url && key) {
+      if ((window as any).supabase && url && url.startsWith('http')) {
         const client = (window as any).supabase.createClient(url, key);
         setSupabaseClient(client);
       }
@@ -32,45 +37,39 @@ export default function AddProductPage() {
     setLoading(true);
     setMessage('');
 
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
+
+    if (!url || !url.startsWith('http')) {
+      setMessage('❌ يرجى إضافة رابط Supabase URL الصحيح في الكود أولاً.');
+      setLoading(false);
+      return;
+    }
 
     try {
       const activeSupabase = supabaseClient || ((window as any).supabase ? (window as any).supabase.createClient(url, key) : null);
 
       if (!activeSupabase) {
-        throw new Error('تعذر الاتصال بقاعدة البيانات. يرجى إعادة تحديث الصفحة.');
+        throw new Error('تعذر الاتصال بقاعدة البيانات. يرجى التحديث والمحاولة مجدداً.');
       }
 
       let imageUrl = '';
 
       // 1. رفع الصورة إلى Supabase Storage
       if (imageFile) {
-        // تنظيف اسم الملف تماماً لتجنب أي مشاكل في الروابط
         const fileExt = imageFile.name.split('.').pop() || 'jpg';
         const cleanFileName = `${Date.now()}.${fileExt}`;
 
-        const { data: uploadData, error: uploadError } = await activeSupabase.storage
-          .from('PRODUCT-IMAGES') // اسم الـ Bucket بحسب إعداداتك
-          .upload(cleanFileName, imageFile, {
-            cacheControl: '3600',
-            upsert: true,
-          });
+        const { error: uploadError } = await activeSupabase.storage
+          .from('product-images')
+          .upload(cleanFileName, imageFile, { upsert: true });
 
         if (uploadError) {
-          // إذا فشل الرفع على PRODUCT-IMAGES نجرب الاحتمال الآخر بالحروف الصغيرة
-          const { error: retryError } = await activeSupabase.storage
-            .from('product-images')
-            .upload(cleanFileName, imageFile, { upsert: true });
-
-          if (retryError) {
-            throw new Error('فشل رفع الصورة: ' + uploadError.message);
-          }
+          throw new Error('فشل رفع الصورة: ' + uploadError.message);
         }
 
-        // جلب رابط الصورة العام
         const { data: urlData } = activeSupabase.storage
-          .from('PRODUCT-IMAGES')
+          .from('product-images')
           .getPublicUrl(cleanFileName);
 
         imageUrl = urlData.publicUrl;
@@ -97,7 +96,7 @@ export default function AddProductPage() {
       setWhatsapp('');
     } catch (error: any) {
       console.error(error);
-      setMessage(`❌ ${error.message || 'حدث خطأ أثناء الإضافة، حاول مجدداً.'}`);
+      setMessage(`❌ ${error.message || 'حدث خطأ أثناء الإضافة.'}`);
     } finally {
       setLoading(false);
     }
