@@ -1,10 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-
-// ضع رابط مفتاح قاعدة البيانات ورابطها المباشر هنا
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+import { useState, useEffect } from 'react';
 
 export default function AddProductPage() {
   const [title, setTitle] = useState('');
@@ -14,64 +10,87 @@ export default function AddProductPage() {
   const [whatsapp, setWhatsapp] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [supabaseClient, setSupabaseClient] = useState<any>(null);
+
+  useEffect(() => {
+    // جلب قيم المتغيرات من البيئة
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+    // تحميل مكتبة Supabase من CDN
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    script.onload = () => {
+      if ((window as any).supabase && url && key) {
+        const client = (window as any).supabase.createClient(url, key);
+        setSupabaseClient(client);
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
 
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!url || !key) {
+      setMessage('❌ خطأ: متغيرات Supabase غير معرّفة في إعدادات Vercel (Environment Variables).');
+      setLoading(false);
+      return;
+    }
+
+    if (!supabaseClient) {
+      // محاولة إنشاء الاتصال فوراً إذا لم يكن جاهزاً
+      if ((window as any).supabase) {
+        const client = (window as any).supabase.createClient(url, key);
+        setSupabaseClient(client);
+      } else {
+        setMessage('❌ جاري الاتصال بقاعدة البيانات، يرجى الانتظار ثانية والمحاولة مجدداً.');
+        setLoading(false);
+        return;
+      }
+    }
+
     try {
+      const activeSupabase = supabaseClient || (window as any).supabase.createClient(url, key);
       let imageUrl = '';
 
-      // 1. رفع الصورة إلى Supabase Storage بطلب مباشر (REST API)
+      // 1. رفع الصورة إلى Supabase Storage
       if (imageFile) {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
 
-        const uploadRes = await fetch(
-          `${SUPABASE_URL}/storage/v1/object/product-images/${fileName}`,
-          {
-            method: 'POST',
-            headers: {
-              'apikey': SUPABASE_KEY,
-              'Authorization': `Bearer ${SUPABASE_KEY}`,
-              'Content-Type': imageFile.type,
-            },
-            body: imageFile,
-          }
-        );
+        const { error: uploadError } = await activeSupabase.storage
+          .from('product-images')
+          .upload(fileName, imageFile);
 
-        if (!uploadRes.ok) {
-          const errData = await uploadRes.json();
-          throw new Error('فشل رفع الصورة: ' + (errData.message || uploadRes.statusText));
+        if (uploadError) {
+          throw new Error('فشل رفع الصورة: ' + uploadError.message);
         }
 
-        // رابط الصورة المرفوعة
-        imageUrl = `${SUPABASE_URL}/storage/v1/object/public/product-images/${fileName}`;
+        const { data: urlData } = activeSupabase.storage
+          .from('product-images')
+          .getPublicUrl(fileName);
+
+        imageUrl = urlData.publicUrl;
       }
 
-      // 2. إضافة بيانات المنتج لجدول المنتجات مباشرة
-      const dbRes = await fetch(`${SUPABASE_URL}/rest/v1/products`, {
-        method: 'POST',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': `Bearer ${SUPABASE_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify({
+      // 2. إدراج بيانات المنتج في الجدول
+      const { error: dbError } = await activeSupabase.from('products').insert([
+        {
           title,
           price: parseFloat(price),
           image: imageUrl,
           seller_name: sellerName,
           whatsapp,
-        }),
-      });
+        },
+      ]);
 
-      if (!dbRes.ok) {
-        const dbErr = await dbRes.json();
-        throw new Error(dbErr.message || 'فشل حفظ بيانات المنتج');
-      }
+      if (dbError) throw dbError;
 
       setMessage('✅ تم إضافة المنتج بنجاح مع الصورة!');
       setTitle('');
@@ -153,7 +172,7 @@ export default function AddProductPage() {
             value={whatsapp}
             onChange={(e) => setWhatsapp(e.target.value)}
             style={{ width: '100%', padding: '10px', borderRadius: '5px', border: '1px solid #ccc' }}
-            placeholder="مثال: 0114537190"
+            placeholder="مثال: 0114537290"
           />
         </div>
 
