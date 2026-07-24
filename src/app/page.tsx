@@ -17,6 +17,7 @@ interface Product {
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -61,14 +62,33 @@ export default function HomePage() {
       </div>
 
       {/* القائمة العلوية Header */}
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #eee', backgroundColor: '#fff' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px 20px', borderBottom: '1px solid #eee', backgroundColor: '#fff', position: 'relative' }}>
+        
+        {/* زر القائمة الجانبية */}
+        <button 
+          onClick={() => setMenuOpen(!menuOpen)}
+          style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer' }}
+        >
+          ☰
+        </button>
+
+        {/* اسم المتجر */}
         <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#4d5d3b' }}>
-          صابون الجنة
+          برادايس سوب
         </div>
+
         <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
           <span style={{ fontSize: '12px', border: '1px solid #ccc', padding: '3px 8px', borderRadius: '12px' }}>EN</span>
-          <span style={{ fontSize: '20px', cursor: 'pointer' }}>🛍️</span>
+          <a href="/add-product" title="إضافة منتج" style={{ textDecoration: 'none', fontSize: '20px' }}>🛍️</a>
         </div>
+
+        {/* القائمة المنسدلة عند الضغط على ☰ */}
+        {menuOpen && (
+          <div style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', zIndex: 100, width: '180px' }}>
+            <a href="/" style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>الصفحة الرئيسية</a>
+            <a href="/add-product" style={{ display: 'block', padding: '12px 15px', color: '#28a745', textDecoration: 'none', fontWeight: 'bold' }}>➕ إضافة منتج جديد</a>
+          </div>
+        )}
       </header>
 
       {/* القسم الرئيسي Banner */}
@@ -77,7 +97,7 @@ export default function HomePage() {
           ✨ منتجات طبيعية وعضوية 100%
         </span>
         <h1 style={{ fontSize: '36px', margin: '20px 0 10px 0', fontWeight: 'bold' }}>Paradise Soap</h1>
-        <h2 style={{ fontSize: '22px', fontWeight: 'normal', color: '#f0e6d2', marginBottom: '15px' }}>برادايس سوب — صابون الجنة</h2>
+        <h2 style={{ fontSize: '22px', fontWeight: 'normal', color: '#f0e6d2', marginBottom: '15px' }}>برادايس سوب — صابون ومستحضرات التجميل</h2>
         <p style={{ maxWidth: '600px', margin: '0 auto 25px auto', lineHeight: '1.6', fontSize: '15px', color: '#e2e8d5' }}>
           منتجاتنا المصنوعة يدوياً بأجود الزيوت والمكونات الطبيعية لتغذية وترطيب بشرتك كل يوم.
         </p>
@@ -132,7 +152,7 @@ export default function HomePage() {
                   <div style={{ padding: '15px' }}>
                     <h3 style={{ fontSize: '18px', margin: '0 0 10px 0', color: '#333' }}>{item.title}</h3>
                     <p style={{ fontSize: '16px', fontWeight: 'bold', color: '#28a745', margin: '0 0 10px 0' }}>
-                      {item.price} جنيه / $
+                      {item.price} جنيه
                     </p>
                     {item.seller_name && (
                       <p style={{ fontSize: '12px', color: '#777', margin: 0 }}>البائع: {item.seller_name}</p>
