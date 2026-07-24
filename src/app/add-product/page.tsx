@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 
-// تم ضبط روابط مشروعك بنجاح ✅
+// تم ضبط الرابط والمفتاح الخاصين بمشروعك بنجاح ✅
 const SUPABASE_URL = 'https://lhxebcykgdyxehcyohzk.supabase.co';
-const SUPABASE_ANON_KEY = 'Sb_publishable_hMGP3EMJNixAVn5liDeh1Q_K10Eiyeu';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxoeGViY3lrZ2R5eGVoY3lvaHprIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4MzEwMjgsImV4cCI6MjEwMDQwNzAyOH0.k4FnoyO8nv_PZxPkK8WVhY1pEp-JWBBHGmzAwYSDtGc';
 
 export default function AddProductPage() {
   const [title, setTitle] = useState('');
@@ -37,7 +37,7 @@ export default function AddProductPage() {
       const activeSupabase = supabaseClient || ((window as any).supabase ? (window as any).supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
 
       if (!activeSupabase) {
-        throw new Error('جاري الاتصال بقاعدة البيانات... يرجى إعادة محاولة الضغط فوراً.');
+        throw new Error('جاري الاتصال... يرجى الضغط مرة أخرى.');
       }
 
       let imageUrl = '';
