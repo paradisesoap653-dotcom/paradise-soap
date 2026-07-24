@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 
-// ⚠️ ضع رابط مشروعك ومفتاح anon الخاص بك في Supabase هنا بين العلامات
-const SUPABASE_URL = 'https://YOUR_PROJECT_ID.supabase.co'; // استبدل هذا برابط Supabase الخاص بك
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // استبدل هذا بالمفتاح الخاص بك
+// تم ضبط روابط مشروعك بنجاح ✅
+const SUPABASE_URL = 'https://lhxebcykgdyxehcyohzk.supabase.co';
+const SUPABASE_ANON_KEY = 'Sb_publishable_hMGP3EMJNixAVn5liDeh1Q_K10Eiyeu';
 
 export default function AddProductPage() {
   const [title, setTitle] = useState('');
@@ -17,15 +17,11 @@ export default function AddProductPage() {
   const [supabaseClient, setSupabaseClient] = useState<any>(null);
 
   useEffect(() => {
-    // جلب القيم إما من المتغيرات أو من الثوابت
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
-
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
     script.onload = () => {
-      if ((window as any).supabase && url && url.startsWith('http')) {
-        const client = (window as any).supabase.createClient(url, key);
+      if ((window as any).supabase) {
+        const client = (window as any).supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         setSupabaseClient(client);
       }
     };
@@ -37,20 +33,11 @@ export default function AddProductPage() {
     setLoading(true);
     setMessage('');
 
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL || SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || SUPABASE_ANON_KEY;
-
-    if (!url || !url.startsWith('http')) {
-      setMessage('❌ يرجى إضافة رابط Supabase URL الصحيح في الكود أولاً.');
-      setLoading(false);
-      return;
-    }
-
     try {
-      const activeSupabase = supabaseClient || ((window as any).supabase ? (window as any).supabase.createClient(url, key) : null);
+      const activeSupabase = supabaseClient || ((window as any).supabase ? (window as any).supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null);
 
       if (!activeSupabase) {
-        throw new Error('تعذر الاتصال بقاعدة البيانات. يرجى التحديث والمحاولة مجدداً.');
+        throw new Error('جاري الاتصال بقاعدة البيانات... يرجى إعادة محاولة الضغط فوراً.');
       }
 
       let imageUrl = '';
