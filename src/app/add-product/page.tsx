@@ -1,12 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-// إنشاء الاتصال المباشر بـ Supabase
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { useState, useEffect } from 'react';
 
 export default function AddProductPage() {
   const [title, setTitle] = useState('');
@@ -16,11 +10,34 @@ export default function AddProductPage() {
   const [whatsapp, setWhatsapp] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
+  const [supabaseClient, setSupabaseClient] = useState<any>(null);
+
+  useEffect(() => {
+    // تحميل مكتبة Supabase ديناميكياً لتفادي مشاكل البناء في Vercel
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+    script.async = true;
+    script.onload = () => {
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+      const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+      if ((window as any).supabase) {
+        const client = (window as any).supabase.createClient(url, key);
+        setSupabaseClient(client);
+      }
+    };
+    document.head.appendChild(script);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+
+    if (!supabaseClient) {
+      setMessage('❌ جاري الاتصال بقاعدة البيانات، يرجى الانتظار ثوانٍ والمحاولة مجدداً.');
+      setLoading(false);
+      return;
+    }
 
     try {
       let imageUrl = '';
@@ -30,7 +47,7 @@ export default function AddProductPage() {
         const fileExt = imageFile.name.split('.').pop();
         const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
 
-        const { error: uploadError } = await supabase.storage
+        const { error: uploadError } = await supabaseClient.storage
           .from('product-images')
           .upload(fileName, imageFile);
 
@@ -39,7 +56,7 @@ export default function AddProductPage() {
         }
 
         // الحصول على الرابط العام للصورة
-        const { data: urlData } = supabase.storage
+        const { data: urlData } = supabaseClient.storage
           .from('product-images')
           .getPublicUrl(fileName);
 
@@ -47,7 +64,7 @@ export default function AddProductPage() {
       }
 
       // 2. إدراج بيانات المنتج في الجدول
-      const { error: dbError } = await supabase.from('products').insert([
+      const { error: dbError } = await supabaseClient.from('products').insert([
         {
           title,
           price: parseFloat(price),
