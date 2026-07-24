@@ -13,11 +13,9 @@ export default function AddProductPage() {
   const [supabaseClient, setSupabaseClient] = useState<any>(null);
 
   useEffect(() => {
-    // جلب قيم المتغيرات من البيئة
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-    // تحميل مكتبة Supabase من CDN
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
     script.onload = () => {
@@ -37,44 +35,43 @@ export default function AddProductPage() {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
-    if (!url || !key) {
-      setMessage('❌ خطأ: متغيرات Supabase غير معرّفة في إعدادات Vercel (Environment Variables).');
-      setLoading(false);
-      return;
-    }
-
-    if (!supabaseClient) {
-      // محاولة إنشاء الاتصال فوراً إذا لم يكن جاهزاً
-      if ((window as any).supabase) {
-        const client = (window as any).supabase.createClient(url, key);
-        setSupabaseClient(client);
-      } else {
-        setMessage('❌ جاري الاتصال بقاعدة البيانات، يرجى الانتظار ثانية والمحاولة مجدداً.');
-        setLoading(false);
-        return;
-      }
-    }
-
     try {
-      const activeSupabase = supabaseClient || (window as any).supabase.createClient(url, key);
+      const activeSupabase = supabaseClient || ((window as any).supabase ? (window as any).supabase.createClient(url, key) : null);
+
+      if (!activeSupabase) {
+        throw new Error('تعذر الاتصال بقاعدة البيانات. يرجى إعادة تحديث الصفحة.');
+      }
+
       let imageUrl = '';
 
       // 1. رفع الصورة إلى Supabase Storage
       if (imageFile) {
-        const fileExt = imageFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random()}.${fileExt}`;
+        // تنظيف اسم الملف تماماً لتجنب أي مشاكل في الروابط
+        const fileExt = imageFile.name.split('.').pop() || 'jpg';
+        const cleanFileName = `${Date.now()}.${fileExt}`;
 
-        const { error: uploadError } = await activeSupabase.storage
-          .from('product-images')
-          .upload(fileName, imageFile);
+        const { data: uploadData, error: uploadError } = await activeSupabase.storage
+          .from('PRODUCT-IMAGES') // اسم الـ Bucket بحسب إعداداتك
+          .upload(cleanFileName, imageFile, {
+            cacheControl: '3600',
+            upsert: true,
+          });
 
         if (uploadError) {
-          throw new Error('فشل رفع الصورة: ' + uploadError.message);
+          // إذا فشل الرفع على PRODUCT-IMAGES نجرب الاحتمال الآخر بالحروف الصغيرة
+          const { error: retryError } = await activeSupabase.storage
+            .from('product-images')
+            .upload(cleanFileName, imageFile, { upsert: true });
+
+          if (retryError) {
+            throw new Error('فشل رفع الصورة: ' + uploadError.message);
+          }
         }
 
+        // جلب رابط الصورة العام
         const { data: urlData } = activeSupabase.storage
-          .from('product-images')
-          .getPublicUrl(fileName);
+          .from('PRODUCT-IMAGES')
+          .getPublicUrl(cleanFileName);
 
         imageUrl = urlData.publicUrl;
       }
@@ -100,7 +97,7 @@ export default function AddProductPage() {
       setWhatsapp('');
     } catch (error: any) {
       console.error(error);
-      setMessage(`❌ حدث خطأ: ${error.message || 'تأكد من البيانات والأذونات'}`);
+      setMessage(`❌ ${error.message || 'حدث خطأ أثناء الإضافة، حاول مجدداً.'}`);
     } finally {
       setLoading(false);
     }
@@ -181,7 +178,7 @@ export default function AddProductPage() {
           disabled={loading}
           style={{
             padding: '12px',
-            backgroundColor: '#28a745',
+            backgroundColor: loading ? '#6c757d' : '#28a745',
             color: '#fff',
             border: 'none',
             borderRadius: '5px',
@@ -189,7 +186,7 @@ export default function AddProductPage() {
             cursor: loading ? 'not-allowed' : 'pointer'
           }}
         >
-          {loading ? 'جاري رفع الصورة والإضافة...' : 'إضافة المنتج'}
+          {loading ? 'جاري الرفع والإضافة...' : 'إضافة المنتج'}
         </button>
       </form>
     </div>
