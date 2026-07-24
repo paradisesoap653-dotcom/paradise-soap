@@ -82,11 +82,14 @@ export default function HomePage() {
           <a href="/add-product" title="إضافة منتج" style={{ textDecoration: 'none', fontSize: '20px' }}>🛍️</a>
         </div>
 
-        {/* القائمة المنسدلة عند الضغط على ☰ */}
+        {/* القائمة المنسدلة المكتملة */}
         {menuOpen && (
-          <div style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 10px rgba(0,0,0,0.1)', zIndex: 100, width: '180px' }}>
+          <div style={{ position: 'absolute', top: '60px', right: '20px', backgroundColor: '#fff', border: '1px solid #ddd', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', zIndex: 100, width: '200px' }}>
             <a href="/" style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>الصفحة الرئيسية</a>
-            <a href="/add-product" style={{ display: 'block', padding: '12px 15px', color: '#28a745', textDecoration: 'none', fontWeight: 'bold' }}>➕ إضافة منتج جديد</a>
+            <a href="#products-section" onClick={() => { setMenuOpen(false); scrollToProducts(); }} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>جميع المنتجات</a>
+            <a href="/add-product" style={{ display: 'block', padding: '12px 15px', color: '#28a745', textDecoration: 'none', fontWeight: 'bold', borderBottom: '1px solid #eee' }}>➕ إضافة منتج جديد</a>
+            <a href="#about" onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none', borderBottom: '1px solid #eee' }}>عن المتجر</a>
+            <a href="#contact" onClick={() => setMenuOpen(false)} style={{ display: 'block', padding: '12px 15px', color: '#333', textDecoration: 'none' }}>اتصل بنا</a>
           </div>
         )}
       </header>
