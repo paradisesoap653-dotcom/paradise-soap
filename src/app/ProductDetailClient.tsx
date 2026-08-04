@@ -29,7 +29,6 @@ export default function ProductDetailClient({ product }: { product: Product }) {
     ? product.images
     : [product.image || "/images/placeholder.jpg"];
 
-  // تم إصلاح الدالة هنا بدمج الكمية داخل كائن المنتج مباشرة
   const handleAddToCart = () => {
     addToCart({
       ...product,
@@ -123,7 +122,7 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               </button>
 
               <a
-                href={`https://wa.me/249xxxxxxxxx?text=مرحباً،%20أود%20الاستفسار%20عن%20منتج:%20${encodeURIComponent(
+                href={`https://wa.me/249114556141?text=مرحباً،%20أود%20الاستفسار%20عن%20منتج:%20${encodeURIComponent(
                   product.nameAr
                 )}`}
                 target="_blank"
