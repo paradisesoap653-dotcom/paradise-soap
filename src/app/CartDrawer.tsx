@@ -1,17 +1,47 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useApp } from "@/context/AppContext";
 
 // أضف أي استيرادات أخرى خاصة بك هنا (مثل الأيقونات أو الصور)
-import WhatsAppIcon from "@/components/WhatsAppIcon"; 
+import WhatsAppIcon from "@/components/WhatsAppIcon";
+
+const WHATSAPP_NUMBER = "249114556141";
+
+const BANK_ACCOUNTS = [
+  {
+    bankName: "بنك الخرطوم",
+    accountNumber: "2629085",
+    accountName: "تاج السر حسن فكي أحمد",
+  },
+  {
+    bankName: "بنك المشرق",
+    accountNumber: "15000061831088",
+    accountName: "TAGELSIR Hassan Fakki Ahmed",
+  },
+];
 
 export default function CartDrawer() {
   const { cart, isCartOpen, setIsCartOpen, removeFromCart, updateQuantity } = useApp();
+  const [showBankInfo, setShowBankInfo] = useState(false);
 
   if (!isCartOpen) return null;
 
   const total = cart.reduce((sum, item) => sum + item.priceSdg * item.quantity, 0);
+
+  const buildOrderMessage = (paymentMethod: string) => {
+    let msg = "طلب جديد من متجر Paradise Soap:\n\n";
+    cart.forEach((item) => {
+      const sizePart = item.sizeAr ? ` (${item.sizeAr})` : "";
+      msg += `- ${item.nameAr}${sizePart} × ${item.quantity} = ${item.priceSdg * item.quantity} ج.س\n`;
+    });
+    msg += `\nالإجمالي: ${total} ج.س`;
+    msg += `\nطريقة الدفع: ${paymentMethod}`;
+    return encodeURIComponent(msg);
+  };
+
+  const whatsappOrderLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${buildOrderMessage("عند الاستلام / يُحدد عبر واتساب")}`;
+  const whatsappBankConfirmLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${buildOrderMessage("تحويل بنكي (تم التحويل)")}`;
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-sm">
@@ -19,7 +49,7 @@ export default function CartDrawer() {
         <div>
           <div className="flex justify-between items-center pb-4 border-b">
             <h2 className="text-lg font-bold">سلة التسوق</h2>
-            <button 
+            <button
               onClick={() => setIsCartOpen(false)}
               className="text-gray-500 hover:text-gray-800 p-2 font-bold"
             >
@@ -39,20 +69,20 @@ export default function CartDrawer() {
                     <p className="text-sm font-bold text-green-700">{item.priceSdg} ج.س</p>
                   </div>
                   <div className="flex items-center gap-2">
-                    <button 
+                    <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
                       className="px-2 py-1 bg-gray-200 rounded text-sm"
                     >
                       -
                     </button>
                     <span className="text-sm font-bold">{item.quantity}</span>
-                    <button 
+                    <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
                       className="px-2 py-1 bg-gray-200 rounded text-sm"
                     >
                       +
                     </button>
-                    <button 
+                    <button
                       onClick={() => removeFromCart(item.id)}
                       className="text-red-500 mr-2 text-xs"
                     >
@@ -71,10 +101,10 @@ export default function CartDrawer() {
               <span>الإجمالي:</span>
               <span className="text-green-700">{total} ج.س</span>
             </div>
-            
-            {/* تم إزالة خاصية title="WhatsApp" من الأيقونة هنا لإصلاح خطأ TypeScript */}
+
+            {/* الدفع عبر واتساب مباشرة */}
             <a
-              href={`https://wa.me/249xxxxxxxxx?text=طلب جديد من المتجر`}
+              href={whatsappOrderLink}
               target="_blank"
               rel="noopener noreferrer"
               className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white py-3 rounded-lg font-bold transition-colors"
@@ -82,13 +112,27 @@ export default function CartDrawer() {
               <WhatsAppIcon className="h-5 w-5 text-white" />
               <span>إتمام الطلب عبر واتساب</span>
             </a>
-            
-            <p className="text-[11px] text-gray-400 text-center">
-              سيتم توجيهك إلى المحادثة المباشرة لتأكيد الطلب والعنوان
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+
+            {/* زر إظهار بيانات التحويل البنكي */}
+            <button
+              type="button"
+              onClick={() => setShowBankInfo((prev) => !prev)}
+              className="w-full flex items-center justify-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-800 py-3 rounded-lg font-bold transition-colors border border-gray-300"
+            >
+              <span>💳 الدفع بتحويل بنكي</span>
+            </button>
+
+            {showBankInfo && (
+              <div className="bg-gray-50 border border-gray-200 rounded-lg p-3 space-y-3">
+                <p className="text-sm text-gray-600 text-center">
+                  حوّل المبلغ إلى أحد الحسابات التالية، ثم اضغط على زر التأكيد
+                </p>
+
+                {BANK_ACCOUNTS.map((bank) => (
+                  <div
+                    key={bank.bankName}
+                    className="bg-white border border-gray-200 rounded-md p-3"
+                  >
+                    <p className="font-bold text-sm text-gray-800">{bank.bankName}</p>
+                    <p className="text-sm text-gray-700">
+                      رقم الحساب: <span cl
