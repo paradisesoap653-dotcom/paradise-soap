@@ -135,4 +135,30 @@ export default function CartDrawer() {
                   >
                     <p className="font-bold text-sm text-gray-800">{bank.bankName}</p>
                     <p className="text-sm text-gray-700">
-                      رقم الحساب: <span cl
+                      رقم الحساب: <span className="font-mono font-bold">{bank.accountNumber}</span>
+                    </p>
+                    <p className="text-xs text-gray-500">باسم: {bank.accountName}</p>
+                  </div>
+                ))}
+
+                <a
+                  href={whatsappBankConfirmLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white py-3 rounded-lg font-bold transition-colors"
+                >
+                  <WhatsAppIcon className="h-5 w-5 text-white" />
+                  <span>تم التحويل، تأكيد الطلب</span>
+                </a>
+              </div>
+            )}
+
+            <p className="text-[11px] text-gray-400 text-center">
+              سيتم توجيهك إلى المحادثة المباشرة لتأكيد الطلب والعنوان
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
