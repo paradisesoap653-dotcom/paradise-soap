@@ -10,7 +10,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cache) => {
           if (cache !== CACHE_NAME) {
-            return caches.delete(cache); // مسح الأيقونات والملفات القديمة فوراً
+            return caches.delete(cache);
           }
         })
       );
@@ -19,5 +19,5 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Service worker basic fetch
+  // Service worker basic fetch handler
 });
