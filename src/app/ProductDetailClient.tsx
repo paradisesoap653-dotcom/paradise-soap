@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { useApp } from "@/context/AppContext";
 import WhatsAppIcon from "@/components/WhatsAppIcon";
 
@@ -44,12 +43,10 @@ export default function ProductDetailClient({ product }: { product: Product }) {
         {/* صور المنتج */}
         <div className="flex flex-col gap-4">
           <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-gray-100 border border-gray-200">
-            <Image
+            <img
               src={selectedImage}
               alt={product.nameAr}
-              fill
-              className="object-cover object-center"
-              priority
+              className="w-full h-full object-cover object-center"
             />
           </div>
           {images.length > 1 && (
@@ -58,11 +55,11 @@ export default function ProductDetailClient({ product }: { product: Product }) {
                 <button
                   key={idx}
                   onClick={() => setSelectedImage(img)}
-                  className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
+                  className={`relative w-20 h-20 rounded-lg overflow-hidden border-2 transition-all shrink-0 ${
                     selectedImage === img ? "border-amber-600 scale-105" : "border-gray-200 opacity-70"
                   }`}
                 >
-                  <Image src={img} alt="" fill className="object-cover" />
+                  <img src={img} alt="" className="w-full h-full object-cover" />
                 </button>
               ))}
             </div>
@@ -92,7 +89,6 @@ export default function ProductDetailClient({ product }: { product: Product }) {
               : product.descriptionAr || "منتج طبيعي فاخر مصنوع بعناية فائقة."}
           </p>
 
-          {/* تحديد الكمية والأزرار */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-4">
               <span className="text-sm font-medium text-gray-700">الكمية:</span>
