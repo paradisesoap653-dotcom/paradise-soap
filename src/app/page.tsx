@@ -1,7 +1,40 @@
-import { products } from '@/data/products';
 import ProductListClient from './ProductListClient';
+import { pool } from '@/lib/db';
 
-export default function HomePage() {
+async function getProducts() {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM paradise_soap_products ORDER BY created_at DESC`
+    );
+    return result.rows.map((row: any) => ({
+      id: row.id,
+      nameAr: row.name_ar,
+      nameEn: row.name_en || row.name_ar,
+      descriptionAr: row.description_ar || '',
+      descriptionEn: row.description_en || '',
+      priceSdg: Number(row.price_sdg),
+      originalPriceSdg: row.original_price_sdg ? Number(row.original_price_sdg) : null,
+      category: row.category || 'solid',
+      images: row.image ? [row.image] : [],
+      rating: 5,
+      stock: row.stock ?? 10,
+      scentAr: null,
+      scentEn: null,
+      sizeAr: null,
+      sizeEn: null,
+      isFeatured: row.is_featured || false,
+    }));
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
+  }
+}
+
+export const dynamic = 'force-dynamic';
+
+export default async function HomePage() {
+  const products = await getProducts();
+
   return (
     <main className="min-h-screen bg-[#faf8f5]">
       {/* Hero Section */}
@@ -49,7 +82,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Real Products Grid (connected to cart) */}
       <ProductListClient products={products} />
 
       {/* Footer Section */}
