@@ -25,13 +25,19 @@ export default function RootLayout({
     <html lang="ar" dir="rtl">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#5c6347" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-32x32.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <meta name="theme-color" content="#F7C6C6" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
                 window.addEventListener('load', function() {
-                  navigator.serviceWorker.register('/sw.js');
+                  navigator.serviceWorker.register('/service-worker.js').then(function() {
+                    console.log('ServiceWorker registered');
+                  }).catch(function(err) {
+                    console.log('ServiceWorker registration failed:', err);
+                  });
                 });
               }
             `,
