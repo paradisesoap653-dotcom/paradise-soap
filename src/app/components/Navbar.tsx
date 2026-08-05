@@ -40,7 +40,7 @@ export default function Navbar() {
           {/* 2. الشعار الهوية (Logo) */}
           <Link href="/" className="flex items-center gap-2 group">
             <span className="text-xl md:text-2xl font-bold bg-gradient-to-r from-amber-900 to-amber-700 bg-clip-text text-transparent">
-              صابون الجنة
+              برادايس سوب
             </span>
           </Link>
 
@@ -56,7 +56,7 @@ export default function Navbar() {
               ➕ إضافة منتج
             </Link>
             <a href="#about" className="hover:text-amber-800 transition-colors">
-              عن صابون الجنة
+              عن برادايس سوب
             </a>
             <a href="#contact" className="hover:text-amber-800 transition-colors">
               اتصل بنا
@@ -122,7 +122,7 @@ export default function Navbar() {
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-2 hover:text-amber-800 border-b border-gray-50"
           >
-            عن صابون الجنة
+            عن برادايس سوب
           </a>
           <a 
             href="#contact" 
