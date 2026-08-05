@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import './globals.css' // أو مسار ملف CSS الخاص بك إذا كان مختلفاً
 
 export const metadata: Metadata = {
   title: 'Paradise Astore',
