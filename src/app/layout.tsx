@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   description: 'متجر برادايس استور',
   manifest: '/manifest.json',
   icons: {
-    icon: '/app-icon.png',
-    apple: '/app-icon.png',
+    icon: '/app-icon.png?v=2',
+    apple: '/app-icon.png?v=2',
   },
 }
 
