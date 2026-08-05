@@ -1,5 +1,5 @@
 {
-  "name": "Paradise Astore",
+  "name": "Paradise Soap",
   "short_name": "Paradise",
   "description": "متجر برادايس استور",
   "start_url": "/",
@@ -8,7 +8,7 @@
   "theme_color": "#E5E5E5",
   "icons": [
     {
-      "src": "/icon-512x512.png",
+      "src": "/app-icon.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
