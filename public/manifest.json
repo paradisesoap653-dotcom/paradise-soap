@@ -1,23 +1,28 @@
 {
-  "name": "برادايس سوب",
-  "short_name": "برادايس سوب",
+  "name": "Paradise Soap",
+  "short_name": "برادايس",
   "description": "متجر صابون ومستحضرات تجميل طبيعية",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#faf8f5",
-  "theme_color": "#5c6347",
+  "background_color": "#ffffff",
+  "theme_color": "#F7C6C6",
   "icons": [
     {
-      "src":https://drive.google.com/file/d/1PYyQhWuJlncN9Zv-CCfk1Y-bmHQQEu48/view?usp=drivesdk
+      "src": "/icons/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3050/3050158.png",
+      "src": "/icons/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "/logo1.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
     }
   ]
 }
