@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Paradise Astore',
-  description: 'متجر برادايس استور',
+  title: 'Paradise Soap',
+  description: 'متجر برادايس استور للمنتجات الطبيعية',
   manifest: '/manifest.json',
   icons: {
-    icon: '/app-icon.png?v=2',
-    apple: '/app-icon.png?v=2',
+    icon: '/logo.png?v=10',
+    apple: '/logo.png?v=10',
   },
 }
 
