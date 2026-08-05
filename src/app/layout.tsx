@@ -5,10 +5,9 @@ export const metadata: Metadata = {
   description: 'متجر برادايس استور',
   manifest: '/manifest.json',
   icons: {
-    icon: '/icon-512x512.png',
-    apple: '/icon-512x512.png',
+    icon: '/app-icon.png',
+    apple: '/app-icon.png',
   },
-}
 
 export default function RootLayout({
   children,
