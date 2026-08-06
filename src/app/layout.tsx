@@ -1,30 +1,50 @@
-import type { Metadata, Viewport } from 'next'
-import './globals.css'
-
-export const viewport: Viewport = {
-  themeColor: '#4d5d3b',
-  width: 'device-width',
-  initialScale: 1,
-}
+import type { Metadata } from 'next';
+import './globals.css';
+import { AppProvider } from '@/context/AppContext';
+import Navbar from './components/Navbar';
+import CartDrawer from './CartDrawer';
 
 export const metadata: Metadata = {
-  title: 'Paradise Soap - برادايس سوب',
-  description: 'متجر برادايس سوب للمنتجات الطبيعية والعضوية',
+  title: 'برادايس سوب',
+  description: 'متجر صابون ومستحضرات تجميل طبيعية',
   manifest: '/manifest.json',
-  icons: {
-    icon: '/logo.png?v=3',
-    apple: '/logo.png?v=3',
+  themeColor: '#5c6347',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'برادايس سوب',
   },
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="ar" dir="rtl">
-      <body>{children}</body>
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="theme-color" content="#5c6347" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if ('serviceWorker' in navigator) {
+                window.addEventListener('load', function() {
+                  navigator.serviceWorker.register('/sw.js');
+                });
+              }
+            `,
+          }}
+        />
+      </head>
+      <body>
+        <AppProvider>
+          <Navbar />
+          {children}
+          <CartDrawer />
+        </AppProvider>
+      </body>
     </html>
-  )
+  );
 }
