@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Paradise Soap',
-  description: 'متجر برادايس استور للمنتجات الطبيعية',
+  description: 'متجر برادايس استور للمنتجات  الطبيعية',
   manifest: '/manifest.json',
   icons: {
     icon: '/logo.png?v=10',
