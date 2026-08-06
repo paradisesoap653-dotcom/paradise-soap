@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useApp } from "@/context/AppContext";
+import InstallAppButton from "../InstallAppButton";
 
 export default function Navbar() {
   const { cart, setIsCartOpen, locale, setLocale } = useApp();
@@ -14,8 +15,9 @@ export default function Navbar() {
     <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md shadow-sm border-b border-amber-100">
       
       {/* شريط الإعلان العلوي المميز */}
-      <div className="bg-amber-900 text-amber-50 text-[11px] md:text-xs py-1.5 px-4 text-center font-medium">
-        ✨ منتجات طبيعية وعضوية 100% لتغذية وترطيب البشرة — شحن سريع لجميع الولايات ✨
+      <div className="bg-amber-900 text-amber-50 text-[11px] md:text-xs py-1.5 px-4 text-center font-medium flex items-center justify-center gap-3 flex-wrap">
+        <span>✨ منتجات طبيعية وعضوية 100% لتغذية وترطيب البشرة — شحن سريع لجميع الولايات ✨</span>
+        <InstallAppButton compact />
       </div>
 
       {/* الهيدر الرئيسي */}
