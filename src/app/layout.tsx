@@ -1,12 +1,23 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
+import './globals.css' // تأكد من استدعاء ملف الـ CSS إذا كان موجوداً لديك
+
+export const viewport: Viewport = {
+  themeColor: '#4d5d3b',
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
-  title: 'Paradise Soap',
-  description: 'متجر برادايس استور للمنتجات  الطبيعية',
+  title: 'Paradise Soap - برادايس سوب',
+  description: 'متجر برادايس سوب للمنتجات الطبيعية والعضوية',
   manifest: '/manifest.json',
   icons: {
-    icon: '/logo.png?v=10',
-    apple: '/logo.png?v=10',
+    icon: [
+      { url: '/logo.png', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/logo.png', type: 'image/png' },
+    ],
   },
 }
 
