@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import './globals.css' // تأكد من استدعاء ملف الـ CSS إذا كان موجوداً لديك
+import './globals.css'
 
 export const viewport: Viewport = {
   themeColor: '#4d5d3b',
@@ -12,12 +12,8 @@ export const metadata: Metadata = {
   description: 'متجر برادايس سوب للمنتجات الطبيعية والعضوية',
   manifest: '/manifest.json',
   icons: {
-    icon: [
-      { url: '/logo.png', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/logo.png', type: 'image/png' },
-    ],
+    icon: '/logo.png?v=3',
+    apple: '/logo.png?v=3',
   },
 }
 
