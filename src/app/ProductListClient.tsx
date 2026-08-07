@@ -25,7 +25,7 @@ type ProductType = {
 };
 
 export default function ProductListClient({ products }: { products: ProductType[] }) {
-  const { locale, t } = useApp();
+  const { locale } = useApp();
   
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -122,7 +122,7 @@ export default function ProductListClient({ products }: { products: ProductType[
               <Search className="absolute right-3.5 top-3 h-4 w-4 text-gray-400 rtl:right-3.5 rtl:left-auto ltr:left-3.5 ltr:right-auto" />
               <input
                 type="text"
-                placeholder={t("searchPlaceholder")}
+                placeholder={locale === "ar" ? "ابحث عن منتج..." : "Search products..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full text-sm py-2.5 px-10 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:outline-none transition-all placeholder:text-gray-400"
@@ -136,10 +136,10 @@ export default function ProductListClient({ products }: { products: ProductType[
                 onChange={(e) => setSortBy(e.target.value)}
                 className="w-full text-sm py-2.5 px-3.5 rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors cursor-pointer"
               >
-                <option value="default">{t("sortBy")}: {t("defaultSort")}</option>
-                <option value="price-asc">{t("priceLowHigh")}</option>
-                <option value="price-desc">{t("priceHighLow")}</option>
-                <option value="rating">{t("ratingSort")}</option>
+                <option value="default">{locale === "ar" ? "الترتيب: الافتراضي" : "Sort: Default"}</option>
+                <option value="price-asc">{locale === "ar" ? "السعر: من الأقل للأعلى" : "Price: Low to High"}</option>
+                <option value="price-desc">{locale === "ar" ? "السعر: من الأعلى للأقل" : "Price: High to Low"}</option>
+                <option value="rating">{locale === "ar" ? "الأعلى تقييماً" : "Top Rated"}</option>
               </select>
             </div>
 
@@ -147,7 +147,7 @@ export default function ProductListClient({ products }: { products: ProductType[
             <div className="md:col-span-3 flex flex-col gap-1 px-1">
               <div className="flex justify-between text-xs text-gray-500">
                 <span>{locale === "ar" ? "الحد الأقصى للسعر:" : "Max Price:"}</span>
-                <span className="font-bold text-emerald-800">{maxPrice.toLocaleString()} {t("sdg")}</span>
+                <span className="font-bold text-emerald-800">{maxPrice.toLocaleString()} {locale === "ar" ? "ج.س" : "SDG"}</span>
               </div>
               <input
                 type="range"
@@ -252,4 +252,4 @@ export default function ProductListClient({ products }: { products: ProductType[
       </div>
     </section>
   );
-}
+            }
