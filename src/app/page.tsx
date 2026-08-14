@@ -84,6 +84,32 @@ export default async function HomePage() {
 
       <ProductListClient products={products} />
 
+      {/* About Section */}
+      <section id="about" className="max-w-3xl mx-auto px-6 py-14 text-center space-y-4 scroll-mt-24">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-[#5a6b48]">عن برادايس سوب</h2>
+        <p className="text-gray-600 leading-relaxed">
+          برادايس سوب متجر سوداني متخصص في صناعة الصابون ومستحضرات العناية الطبيعية يدوياً،
+          باستخدام زيوت ومكونات عضوية 100% خالية من المواد الكيميائية الضارة. هدفنا نوصلك
+          منتجات آمنة وفعالة تعتني ببشرتك، مع شحن سريع لجميع الولايات.
+        </p>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="max-w-3xl mx-auto px-6 py-14 text-center space-y-5 scroll-mt-24">
+        <h2 className="text-2xl md:text-3xl font-extrabold text-[#5a6b48]">اتصل بنا</h2>
+        <p className="text-gray-600 leading-relaxed">
+          عندك سؤال عن منتج أو طلبية؟ تواصل معانا مباشرة عبر واتساب وهنرد عليك بأسرع وقت.
+        </p>
+        <a
+          href="https://wa.me/249114556141"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-block bg-[#5a6b48] text-white font-bold px-8 py-3 rounded-full shadow-md hover:opacity-90 transition"
+        >
+          راسلنا على واتساب
+        </a>
+      </section>
+
       {/* Footer Section */}
       <footer id="footer" className="bg-[#2c3e2e] text-white py-10 px-6 text-center text-sm space-y-4">
         <h3 className="text-xl font-bold">Paradise Soap</h3>
