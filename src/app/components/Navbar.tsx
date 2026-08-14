@@ -51,18 +51,18 @@ export default function Navbar() {
             <Link href="/" className="hover:text-amber-800 transition-colors">
               الرئيسية
             </Link>
-            <a href="#products" className="hover:text-amber-800 transition-colors">
+            <Link href="/#products-section" className="hover:text-amber-800 transition-colors">
               المنتجات
-            </a>
+            </Link>
             <Link href="/add-product" className="text-amber-800 hover:text-amber-600 font-bold transition-colors flex items-center gap-1">
               ➕ إضافة منتج
             </Link>
-            <a href="#about" className="hover:text-amber-800 transition-colors">
+            <Link href="/#about" className="hover:text-amber-800 transition-colors">
               عن برادايس سوب
-            </a>
-            <a href="#contact" className="hover:text-amber-800 transition-colors">
+            </Link>
+            <Link href="/#contact" className="hover:text-amber-800 transition-colors">
               اتصل بنا
-            </a>
+            </Link>
           </nav>
 
           {/* 4. أزرار التحكم (اللغة + السلة) */}
@@ -105,13 +105,13 @@ export default function Navbar() {
           >
             الرئيسية
           </Link>
-          <a 
-            href="#products" 
+          <Link 
+            href="/#products-section" 
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-2 hover:text-amber-800 border-b border-gray-50"
           >
             المنتجات
-          </a>
+          </Link>
           <Link 
             href="/add-product" 
             onClick={() => setIsMobileMenuOpen(false)}
@@ -119,20 +119,20 @@ export default function Navbar() {
           >
             ➕ إضافة منتج
           </Link>
-          <a 
-            href="#about" 
+          <Link 
+            href="/#about" 
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-2 hover:text-amber-800 border-b border-gray-50"
           >
             عن برادايس سوب
-          </a>
-          <a 
-            href="#contact" 
+          </Link>
+          <Link 
+            href="/#contact" 
             onClick={() => setIsMobileMenuOpen(false)}
             className="block py-2 hover:text-amber-800"
           >
             اتصل بنا
-          </a>
+          </Link>
         </div>
       )}
     </header>
