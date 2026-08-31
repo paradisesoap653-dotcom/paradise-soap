@@ -40,7 +40,6 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#faf8f5]">
-      {/* Hero Section */}
       <section className="relative rounded-b-3xl bg-[#5a6b48] px-6 py-12 text-center text-white shadow-sm">
         <div className="mx-auto max-w-3xl space-y-5">
           <span className="inline-block rounded-full bg-white/20 px-4 py-1 text-xs font-semibold backdrop-blur-md">
@@ -60,14 +59,12 @@ export default async function HomePage() {
             وترطيب بشرتك كل يوم.
           </p>
 
-          <div className="flex flex-col items-center justify-center gap-4 pt-2 sm:flex-row">
-            <a
-              href="#products-section"
-              className="w-full rounded-full bg-white px-8 py-3 font-bold text-[#5a6b48] shadow-lg transition hover:bg-gray-100 sm:w-auto"
-            >
-              تسوق الآن
-            </a>
-          </div>
+          <a
+            href="#products-section"
+            className="inline-block rounded-full bg-white px-8 py-3 font-bold text-[#5a6b48] shadow-lg transition hover:bg-gray-100"
+          >
+            تسوق الآن
+          </a>
 
           <div className="mx-auto grid max-w-lg grid-cols-3 gap-4 border-t border-white/20 pt-6">
             <div>
@@ -90,7 +87,6 @@ export default async function HomePage() {
 
       <ProductListClient products={products} />
 
-      {/* About Section */}
       <section
         id="about"
         className="mx-auto max-w-3xl scroll-mt-24 space-y-4 px-6 py-14 text-center"
@@ -107,7 +103,6 @@ export default async function HomePage() {
         </p>
       </section>
 
-      {/* Contact Section */}
       <section
         id="contact"
         className="mx-auto max-w-3xl scroll-mt-24 space-y-5 px-6 py-14 text-center"
@@ -131,7 +126,6 @@ export default async function HomePage() {
         </a>
       </section>
 
-      {/* Footer Section */}
       <footer
         id="footer"
         className="bg-[#2c3e2e] px-6 py-12 text-center text-white"
@@ -151,80 +145,96 @@ export default async function HomePage() {
             </p>
           </div>
 
-          {/* Social Icons */}
           <div className="flex flex-wrap items-center justify-center gap-5 pt-3">
-            {/* WhatsApp */}
             <a
               href="https://wa.me/249114556141"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="واتساب"
               title="واتساب"
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-3xl shadow-lg transition hover:scale-110"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] shadow-lg transition hover:scale-110"
             >
-              <span aria-hidden="true">◔</span>
+              <img
+                src="https://cdn.simpleicons.org/whatsapp/ffffff"
+                alt="واتساب"
+                className="h-9 w-9"
+              />
             </a>
 
-            {/* Facebook */}
             <a
               href="https://m.facebook.com/paradisetech1/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="فيسبوك"
               title="فيسبوك"
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1877F2] text-4xl font-bold shadow-lg transition hover:scale-110"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1877F2] shadow-lg transition hover:scale-110"
             >
-              f
+              <img
+                src="https://cdn.simpleicons.org/facebook/ffffff"
+                alt="فيسبوك"
+                className="h-9 w-9"
+              />
             </a>
 
-            {/* Instagram */}
             <a
               href="https://www.instagram.com/paradise_tech2"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="إنستغرام"
               title="إنستغرام"
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 text-3xl font-bold shadow-lg transition hover:scale-110"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 shadow-lg transition hover:scale-110"
             >
-              ◎
+              <img
+                src="https://cdn.simpleicons.org/instagram/ffffff"
+                alt="إنستغرام"
+                className="h-9 w-9"
+              />
             </a>
 
-            {/* TikTok */}
             <a
               href="https://www.tiktok.com/@paradise_12s"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="تيك توك"
               title="تيك توك"
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-black text-4xl font-bold shadow-lg transition hover:scale-110"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-black shadow-lg transition hover:scale-110"
             >
-              ♪
+              <img
+                src="https://cdn.simpleicons.org/tiktok/ffffff"
+                alt="تيك توك"
+                className="h-9 w-9"
+              />
             </a>
 
-            {/* YouTube */}
             <a
               href="https://youtube.com/@paradisetech_1"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="يوتيوب"
               title="يوتيوب"
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FF0000] text-2xl font-bold shadow-lg transition hover:scale-110"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FF0000] shadow-lg transition hover:scale-110"
             >
-              ▶
+              <img
+                src="https://cdn.simpleicons.org/youtube/ffffff"
+                alt="يوتيوب"
+                className="h-9 w-9"
+              />
             </a>
 
-            {/* Phone */}
             <a
               href="tel:+249114556141"
               aria-label="اتصال"
               title="اتصال"
-              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#4285F4] text-3xl shadow-lg transition hover:scale-110"
+              className="flex h-16 w-16 items-center justify-center rounded-full bg-[#4285F4] shadow-lg transition hover:scale-110"
             >
-              ☎
+              <img
+                src="https://cdn.simpleicons.org/phone/ffffff"
+                alt="اتصال"
+                className="h-9 w-9"
+              />
             </a>
           </div>
 
-          {/* Contact Details */}
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-300">
             <a
               href="tel:+249114556141"
@@ -241,7 +251,6 @@ export default async function HomePage() {
             </a>
           </div>
 
-          {/* Copyright */}
           <div className="border-t border-gray-700 pt-5 text-xs text-gray-400">
             جميع الحقوق محفوظة © {new Date().getFullYear()} — Paradise Astore
           </div>
