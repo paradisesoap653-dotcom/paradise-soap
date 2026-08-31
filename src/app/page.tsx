@@ -45,11 +45,11 @@ export default async function HomePage() {
           </span>
 
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            Paradise Soap
+            Paradise Astore
           </h1>
 
           <p className="text-lg font-medium opacity-90">
-            برادايس سوب — صابون ومستحضرات التجميل
+            برادايس استور — صابون ومستحضرات التجميل
           </p>
 
           <p className="text-sm max-w-xl mx-auto opacity-80 leading-relaxed">
@@ -86,9 +86,9 @@ export default async function HomePage() {
 
       {/* About Section */}
       <section id="about" className="max-w-3xl mx-auto px-6 py-14 text-center space-y-4 scroll-mt-24">
-        <h2 className="text-2xl md:text-3xl font-extrabold text-[#5a6b48]">عن برادايس سوب</h2>
+        <h2 className="text-2xl md:text-3xl font-extrabold text-[#5a6b48]">عن برادايس استور</h2>
         <p className="text-gray-600 leading-relaxed">
-          برادايس سوب متجر سوداني متخصص في صناعة الصابون ومستحضرات العناية الطبيعية يدوياً،
+          برادايس استور متجر سوداني متخصص في صناعة الصابون ومستحضرات العناية الطبيعية يدوياً،
           باستخدام زيوت ومكونات عضوية 100% خالية من المواد الكيميائية الضارة. هدفنا نوصلك
           منتجات آمنة وفعالة تعتني ببشرتك، مع شحن سريع لجميع الولايات.
         </p>
@@ -112,7 +112,7 @@ export default async function HomePage() {
 
       {/* Footer Section */}
       <footer id="footer" className="bg-[#2c3e2e] text-white py-10 px-6 text-center text-sm space-y-4">
-        <h3 className="text-xl font-bold">Paradise Soap</h3>
+        <h3 className="text-xl font-bold">Paradise Astore</h3>
         <p className="text-gray-300 max-w-md mx-auto">منصتك الأولى للمنتجات والمستحضرات الطبيعية العضوية.</p>
 
         <div className="flex justify-center gap-6 pt-2">
@@ -122,7 +122,7 @@ export default async function HomePage() {
         </div>
 
         <div className="text-xs text-gray-400 pt-4 border-t border-gray-700">
-          جميع الحقوق محفوظة © 2026 Paradise Soap
+          جميع الحقوق محفوظة © 2026 Paradise Astore
         </div>
       </footer>
     </main>
