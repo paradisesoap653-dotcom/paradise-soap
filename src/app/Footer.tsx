@@ -1,80 +1,127 @@
 "use client";
 
 import React from "react";
+import {
+  Facebook,
+  Instagram,
+  Youtube,
+  Phone,
+} from "lucide-react";
+import WhatsAppIcon from "./WhatsAppIcon";
 
 export default function Footer() {
   return (
-    <footer className="bg-white border-t border-gray-100 pt-10 pb-20 px-4 text-center">
-      <div className="max-w-4xl mx-auto space-y-6">
-        
-        {/* عنوان التواصل */}
+    <footer className="bg-[#283D2D] border-t border-white/10 pt-14 pb-20 px-4 text-center text-white">
+      <div className="max-w-4xl mx-auto space-y-8">
+
+        {/* عنوان الموقع */}
         <div>
-          <h3 className="text-lg font-bold text-gray-800 mb-1">تواصل معنا</h3>
-          <p className="text-xs text-gray-500">يسعدنا خدمتكم والإجابة على استفساراتكم دائماً</p>
+          <h2 className="text-3xl font-extrabold mb-3">
+            Paradise Astore
+          </h2>
+          <p className="text-base text-white/70">
+            متجرك الأول للمنتجات والمستحضرات الطبيعية العضوية.
+          </p>
         </div>
 
-        {/* أرقام التواصل والبريد */}
-        <div className="flex flex-wrap justify-center gap-3 text-xs">
+        {/* عنوان التواصل */}
+        <div>
+          <h3 className="text-2xl font-bold mb-2">
+            تواصل معنا مباشرة
+          </h3>
+          <p className="text-sm text-white/70">
+            يسعدنا خدمتكم والإجابة على استفساراتكم دائمًا
+          </p>
+        </div>
+
+        {/* أيقونات التواصل */}
+        <div className="flex justify-center items-center gap-5 flex-wrap pt-3">
+
+          {/* واتساب */}
           <a
-            href="tel:0913009060"
-            className="bg-[#FAF7F2] text-[#5C6348] font-bold px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition"
+            href="https://wa.me/249114556141"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="واتساب"
+            className="w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform"
           >
-            📞 0913009060
+            <WhatsAppIcon className="w-9 h-9" title="واتساب" />
           </a>
+
+          {/* فيسبوك */}
           <a
-            href="tel:0114537190"
-            className="bg-[#FAF7F2] text-[#5C6348] font-bold px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition"
+            href="https://m.facebook.com/paradisetech1/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="فيسبوك"
+            className="w-16 h-16 rounded-full bg-[#1877F2] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
           >
-            📞 0114537190
+            <Facebook className="w-9 h-9 text-white" />
           </a>
+
+          {/* إنستغرام */}
+          <a
+            href="https://www.instagram.com/paradise_tech2"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="إنستغرام"
+            className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          >
+            <Instagram className="w-9 h-9 text-white" />
+          </a>
+
+          {/* تيك توك */}
+          <a
+            href="https://www.tiktok.com/@paradise_12s"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="تيك توك"
+            className="w-16 h-16 rounded-full bg-black flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          >
+            <span className="text-white text-3xl font-black">♪</span>
+          </a>
+
+          {/* يوتيوب */}
+          <a
+            href="https://youtube.com/@paradisetech_1"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="يوتيوب"
+            className="w-16 h-16 rounded-full bg-[#FF0000] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          >
+            <Youtube className="w-9 h-9 text-white" />
+          </a>
+
+          {/* الهاتف */}
+          <a
+            href="tel:+249114556141"
+            aria-label="اتصال"
+            className="w-16 h-16 rounded-full bg-[#4285F4] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          >
+            <Phone className="w-9 h-9 text-white" />
+          </a>
+
+        </div>
+
+        {/* البريد ورقم الهاتف */}
+        <div className="flex flex-wrap justify-center gap-3 text-sm text-white/80">
+          <a href="tel:+249114556141" className="hover:text-white transition">
+            📞 +249 11 455 6141
+          </a>
+
           <a
             href="mailto:paradisesoap365@gmail.com"
-            className="bg-[#FAF7F2] text-[#5C6348] font-bold px-4 py-2 rounded-xl border border-gray-200 hover:bg-gray-50 transition"
+            className="hover:text-white transition"
           >
             ✉️ paradisesoap365@gmail.com
           </a>
         </div>
 
-        {/* أيقونات مواقع التواصل الاجتماعي */}
-        <div className="flex justify-center gap-2 flex-wrap pt-2">
-          <a
-            href="https://wa.me/249913009060"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#25D366] text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm hover:opacity-90 transition"
-          >
-            🟢 واتساب
-          </a>
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#1877F2] text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm hover:opacity-90 transition"
-          >
-            🔵 فيسبوك
-          </a>
-          <a
-            href="https://tiktok.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-black text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm hover:opacity-90 transition"
-          >
-            🎵 تيك توك
-          </a>
-          <a
-            href="https://youtube.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-[#FF0000] text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm hover:opacity-90 transition"
-          >
-            🔴 يوتيوب
-          </a>
+        {/* الحقوق */}
+        <div className="border-t border-white/10 pt-6 text-xs text-white/50">
+          جميع الحقوق محفوظة © {new Date().getFullYear()} — Paradise Astore
         </div>
 
-        {/* الحقوق */}
-        <div className="border-t border-gray-100 pt-6 text-[11px] text-gray-400">
-          جميع الحقوق محفوظة © {new Date().getFullYear()} — صابون الجنة (Paradise Soap)
-        </div>
       </div>
     </footer>
   );
