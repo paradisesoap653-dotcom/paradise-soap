@@ -197,16 +197,16 @@ export default async function HomePage() {
 
           <div className="flex flex-wrap items-center justify-center gap-6">
             {/* تيك توك */}
-            <a
-              href="https://www.tiktok.com/@paradise_12s"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="تيك توك"
-              title="تيك توك"
-              className="flex h-20 w-20 items-center justify-center rounded-full bg-black text-white shadow-lg transition hover:scale-110"
-            >
-              <TikTokIcon />
-            </a>
+        <a
+  href="https://www.tiktok.com/@paradise_12s"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label="تيك توك"
+  title="تيك توك"
+  className="flex h-20 w-20 items-center justify-center rounded-full bg-black text-white shadow-lg transition hover:scale-110"
+>
+  <TikTokIcon />
+</a>  
 
             {/* إنستغرام */}
             <a
