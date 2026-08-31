@@ -1,41 +1,35 @@
 "use client";
 
 import React from "react";
-import {
-  Facebook,
-  Instagram,
-  Youtube,
-  Phone,
-} from "lucide-react";
+import { Phone } from "lucide-react";
 import WhatsAppIcon from "./WhatsAppIcon";
 
 export default function Footer() {
   return (
     <footer className="bg-[#283D2D] border-t border-white/10 pt-14 pb-20 px-4 text-center text-white">
-      <div className="max-w-4xl mx-auto space-y-8">
+      <div className="mx-auto max-w-4xl space-y-8">
 
-        {/* عنوان الموقع */}
         <div>
-          <h2 className="text-3xl font-extrabold mb-3">
+          <h2 className="mb-3 text-3xl font-extrabold">
             Paradise Astore
           </h2>
+
           <p className="text-base text-white/70">
             متجرك الأول للمنتجات والمستحضرات الطبيعية العضوية.
           </p>
         </div>
 
-        {/* عنوان التواصل */}
         <div>
-          <h3 className="text-2xl font-bold mb-2">
+          <h3 className="mb-2 text-2xl font-bold">
             تواصل معنا مباشرة
           </h3>
+
           <p className="text-sm text-white/70">
             يسعدنا خدمتكم والإجابة على استفساراتكم دائمًا
           </p>
         </div>
 
-        {/* أيقونات التواصل */}
-        <div className="flex justify-center items-center gap-5 flex-wrap pt-3">
+        <div className="flex flex-wrap items-center justify-center gap-5 pt-3">
 
           {/* واتساب */}
           <a
@@ -43,9 +37,12 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="واتساب"
-            className="w-16 h-16 rounded-full bg-[#25D366] flex items-center justify-center text-white shadow-lg hover:scale-110 transition-transform"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg transition-transform hover:scale-110"
           >
-            <WhatsAppIcon className="w-9 h-9" title="واتساب" />
+            <WhatsAppIcon
+              className="h-9 w-9"
+              title="واتساب"
+            />
           </a>
 
           {/* فيسبوك */}
@@ -54,9 +51,9 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="فيسبوك"
-            className="w-16 h-16 rounded-full bg-[#1877F2] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-[#1877F2] text-4xl font-bold text-white shadow-lg transition-transform hover:scale-110"
           >
-            <Facebook className="w-9 h-9 text-white" />
+            f
           </a>
 
           {/* إنستغرام */}
@@ -65,9 +62,9 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="إنستغرام"
-            className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-600 via-pink-500 to-yellow-400 text-3xl font-bold text-white shadow-lg transition-transform hover:scale-110"
           >
-            <Instagram className="w-9 h-9 text-white" />
+            ◎
           </a>
 
           {/* تيك توك */}
@@ -76,9 +73,9 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="تيك توك"
-            className="w-16 h-16 rounded-full bg-black flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-black text-4xl font-black text-white shadow-lg transition-transform hover:scale-110"
           >
-            <span className="text-white text-3xl font-black">♪</span>
+            ♪
           </a>
 
           {/* يوتيوب */}
@@ -87,37 +84,38 @@ export default function Footer() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="يوتيوب"
-            className="w-16 h-16 rounded-full bg-[#FF0000] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-[#FF0000] text-2xl font-bold text-white shadow-lg transition-transform hover:scale-110"
           >
-            <Youtube className="w-9 h-9 text-white" />
+            ▶
           </a>
 
           {/* الهاتف */}
           <a
             href="tel:+249114556141"
             aria-label="اتصال"
-            className="w-16 h-16 rounded-full bg-[#4285F4] flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+            className="flex h-16 w-16 items-center justify-center rounded-full bg-[#4285F4] shadow-lg transition-transform hover:scale-110"
           >
-            <Phone className="w-9 h-9 text-white" />
+            <Phone className="h-9 w-9 text-white" />
           </a>
 
         </div>
 
-        {/* البريد ورقم الهاتف */}
-        <div className="flex flex-wrap justify-center gap-3 text-sm text-white/80">
-          <a href="tel:+249114556141" className="hover:text-white transition">
+        <div className="flex flex-wrap justify-center gap-4 text-sm text-white/80">
+          <a
+            href="tel:+249114556141"
+            className="transition hover:text-white"
+          >
             📞 +249 11 455 6141
           </a>
 
           <a
             href="mailto:paradisesoap365@gmail.com"
-            className="hover:text-white transition"
+            className="transition hover:text-white"
           >
             ✉️ paradisesoap365@gmail.com
           </a>
         </div>
 
-        {/* الحقوق */}
         <div className="border-t border-white/10 pt-6 text-xs text-white/50">
           جميع الحقوق محفوظة © {new Date().getFullYear()} — Paradise Astore
         </div>
