@@ -5,14 +5,14 @@ import Navbar from './components/Navbar';
 import CartDrawer from './CartDrawer';
 
 export const metadata: Metadata = {
-  title: 'برادايس سوب',
+  title: 'برادايس استور',
   description: 'متجر صابون ومستحضرات تجميل طبيعية',
   manifest: '/manifest.json',
   themeColor: '#5c6347',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'برادايس سوب',
+    title: 'برادايس استور',
   },
 };
 
